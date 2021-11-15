@@ -11,6 +11,7 @@ import scipy.io.wavfile as wave
 
 from mido import MidiFile
 
+
 class AudioProcessor:
     def __init__(self) -> None:
         self.app = {
@@ -21,7 +22,7 @@ class AudioProcessor:
             "vocal-contour": vocal_contour,
             "beat": beat
         }
-        
+
         self.model = {
             "piano": "Piano",
             "piano-v2": "PianoV2",
@@ -30,11 +31,11 @@ class AudioProcessor:
             "": None
         }
 
-    def convertToWave(self,file:str):
-        filename,ext=tuple(file.split("."))
-        if ext=="wav":
+    def convertToWave(self, file: str):
+        filename, ext = tuple(file.split("."))
+        if ext == "wav":
             return True
-        elif ext=="mp3":                                                                         
+        elif ext == "mp3":
             out = f"{filename}.wav"
             sound = AudioSegment.from_mp3(file)
             sound.export(out, format="wav")
@@ -42,16 +43,16 @@ class AudioProcessor:
         else:
             print("Only mp3 and Wav files supported")
             return False
-        
-    def transcribe(self,file,mode,output_dir="Midi"):
-        converted=self.convertToWave(file)
+
+    def transcribe(self, file, mode, output_dir="Midi"):
+        converted = self.convertToWave(file)
 
         if not converted:
             print("Can not convert given file")
             return
 
-        filename,ext=tuple(file.split("."))
-        file=f"{filename}.wav"
+        filename, ext = tuple(file.split("."))
+        file = f"{filename}.wav"
 
         model = ""
         if mode.startswith("music"):
@@ -59,8 +60,21 @@ class AudioProcessor:
             mode = mode_list[0]
             model = "-".join(mode_list[1:])
 
-        app=self.app[mode]
-        model=self.model[model]
+        app = self.app[mode]
+        model = self.model[model]
 
-        app.transcribe(file, model_path=model,output=output_dir)
+        app.transcribe(file, model_path=model, output=output_dir)
 
+    # convert midi to wav
+
+    def midi_to_wav(self, file, output_dir="Wav"):
+        mid = MidiFile(file)
+        out = f"{output_dir}/{file.split('/')[-1].split('.')[0]}.wav"
+        mid.save(out)
+
+    # extract melody from wav
+
+    # def extract_melody(self, file, output_dir="Melody"):
+    #     filename, ext = tuple(file.split("."))
+    #     file = f"{filename}.wav"
+    #     beat.extract_melody(file, output=output_dir)

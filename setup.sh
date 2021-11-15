@@ -1,5 +1,6 @@
+# check omnizart path and set it if not set
 pip install --ignore-installed omnizart
-pip install -U llvmlite==0.32.1
+pip install -U llvmlite==0.31.0
 pip uninstall tensorflow
 pip install tensorflow==2.5
 
