@@ -15,6 +15,7 @@ from Visualiser import Visualiser
 
 from midi2audio import FluidSynth
 
+
 class AudioProcessor:
     def __init__(self) -> None:
         self.app = {
@@ -33,7 +34,8 @@ class AudioProcessor:
             "pop-song": "Pop",
             "": None
         }
-        self.fs=FluidSynth()
+        self.fs = FluidSynth()
+
     def convertToWave(self, file: str):
         filename, ext = tuple(file.split("."))
         if ext == "wav":
@@ -69,21 +71,17 @@ class AudioProcessor:
         app.transcribe(file, model_path=model, output=output_dir)
         return(f"{output_dir}/{file.split('/')[-1].split('.')[0]}.mid")
 
-    # convert midi to wav
-
     def toWav(self, file, output_dir="Wav"):
-        mid = MidiFile(file)
         out = f"{output_dir}/{file.split('/')[-1].split('.')[0]}.wav"
-        mid.save(out)
-        
-    def extractMelody(self,filename,output_dir="./Midi"):
+        self.fs.midi_to_audio(file, out)
+
+    def extractMelody(self, filename, output_dir="./Midi"):
         mid_out = skyline(filename)
         mid_out.dump(f"{output_dir}/{filename.split('/')[-1].split('.')[0]}_melody.mid")
         return(f"{output_dir}/{filename.split('/')[-1].split('.')[0]}_melody.mid")
 
-    def visualise(self,file,output_dir="Images"):
+    def visualise(self, file, output_dir="Images"):
         visualiser = Visualiser(file)
         # get the np array of piano roll image
         roll = visualiser.get_roll()
-
         visualiser.draw_roll(filename=f"{output_dir}/{file.split('/')[-1].split('.')[0]}.png")
