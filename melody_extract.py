@@ -37,7 +37,7 @@ for i, track in enumerate(mid_in.tracks):
 
     for message in track:
         # meta message
-        if message.type != 'note_on' and message.type != 'note_off':
+        if message.type != 'note_on' and message.type != 'note_off':  # use is_meta!
             message.time += tick
             tick = 0
             mid_out.tracks[i].append(message)
@@ -87,7 +87,7 @@ for i, track in enumerate(mid_in.tracks):
 
         # note off event
         else:
-            if message.note >= sky.note:
+            if message.note >= sky.note:  # >= or == lolll batao koi
                 message.time += tick
                 mid_out.tracks[i].append(message)
                 tick = 0

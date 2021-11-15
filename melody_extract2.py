@@ -1,3 +1,6 @@
+# change for only one instrument
+# method of sorting start time of notes
+
 import copy
 import miditoolkit
 import numpy as np
@@ -31,7 +34,7 @@ def skyline(mido_obj, instr_idx=0):
         pitches = [n.pitch for n in notes]
         note = copy.deepcopy(notes[np.argmax(pitches)])
         if si < len(starts)-1:
-            note.end = min(note.end, starts[si+1])
+            note.end = min(note.end, starts[si+1])  # no space left b/w notes here hence yayyyy
         skyline_notes.append(note)
     new_midi_obj = miditoolkit.midi.parser.MidiFile()
     new_midi_obj.markers = mido_obj.markers
