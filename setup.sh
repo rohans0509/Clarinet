@@ -11,3 +11,8 @@ pip install pydub
 
 # apt install fluidsynth
 # apt install ffmpeg
+
+
+# extractMelody()
+# midiToAudio
+# midiToString
