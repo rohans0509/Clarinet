@@ -10,7 +10,10 @@ from pydub import AudioSegment
 import scipy.io.wavfile as wave
 
 from mido import MidiFile
+from skyline import skyline
+from Visualiser import Visualiser
 
+from midi2audio import FluidSynth
 
 class AudioProcessor:
     def __init__(self) -> None:
@@ -30,7 +33,7 @@ class AudioProcessor:
             "pop-song": "Pop",
             "": None
         }
-
+        self.fs=FluidSynth()
     def convertToWave(self, file: str):
         filename, ext = tuple(file.split("."))
         if ext == "wav":
@@ -64,17 +67,23 @@ class AudioProcessor:
         model = self.model[model]
 
         app.transcribe(file, model_path=model, output=output_dir)
+        return(f"{output_dir}/{file.split('/')[-1].split('.')[0]}.mid")
 
     # convert midi to wav
 
-    def midi_to_wav(self, file, output_dir="Wav"):
+    def toWav(self, file, output_dir="Wav"):
         mid = MidiFile(file)
         out = f"{output_dir}/{file.split('/')[-1].split('.')[0]}.wav"
         mid.save(out)
+        
+    def extractMelody(self,filename,output_dir="./Midi"):
+        mid_out = skyline(filename)
+        mid_out.dump(f"{output_dir}/{filename.split('/')[-1].split('.')[0]}_melody.mid")
+        return(f"{output_dir}/{filename.split('/')[-1].split('.')[0]}_melody.mid")
 
-    # extract melody from wav
+    def visualise(self,file,output_dir="Images"):
+        visualiser = Visualiser(file)
+        # get the np array of piano roll image
+        roll = visualiser.get_roll()
 
-    # def extract_melody(self, file, output_dir="Melody"):
-    #     filename, ext = tuple(file.split("."))
-    #     file = f"{filename}.wav"
-    #     beat.extract_melody(file, output=output_dir)
+        visualiser.draw_roll(filename=f"{output_dir}/{file.split('/')[-1].split('.')[0]}.png")

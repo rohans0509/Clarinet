@@ -9,11 +9,11 @@ pip install pyfluidsynth
 pip install vamp
 pip install essentia
 pip install pydub
+pip install midi2audio
+pip install miditoolkit
+pip install mido
 
 # apt install fluidsynth
 # apt install ffmpeg
 
 
-# extractMelody()
-# midiToAudio
-# midiToString
