@@ -1,0 +1,24 @@
+Intro
+
+Decided flow 
+
+each step algo
+1) preprocessing 
+2) melody extract skyline explain
+3) IR step
+
+
+36 to 88: 86
+37 to 84: 78 
+
+
+issue: note.end = min(note.end, starts[si+1])
+
+the note should not end when the next one starts if the next note is of lower pitch.
+
+fix: 
+keep a list of current notes and hash the largest value of this list and also the end times so that we are able to remove them as we see fit.
+
+
+new ideas:
+can use velocity and pitch together for that weight of the vector (skyline uses just pitch and NELODY INDENTIFICATION I STANDARD MIDI uses velocity (a cited paper in intro atleast))
