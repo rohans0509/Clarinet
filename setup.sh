@@ -12,8 +12,9 @@ pip install pydub
 pip install midi2audio
 pip install miditoolkit
 pip install mido
+pip install music21
 
-# apt install fluidsynth
-# apt install ffmpeg
+# apt install fluidsynth / brew install fluidsynth
+# apt install ffmpeg / brew install ffmpeg
 
 

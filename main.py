@@ -1,33 +1,30 @@
-from AudioProcessor import AudioProcessor
+from Clarinet.converter.midi2audio import midi2audio
+from Clarinet.converter.audio2midi import audio2midi
+from  Clarinet.visualiser import visualise
+from Clarinet.melodyextraction import extractMelody
+from Clarinet.preprocessing import preprocess
+from Clarinet.utils import extractMelodyFolder,extractNotes,preprocessFolder
 
-ap = AudioProcessor()
-
-filename = "Data/happy_birthday.mp3"
+filename = "Data/Audio/Birthday/happy_birthday.wav"
 mode = "music-piano-v2"
-output_dir = "Midi"
 
 
 # Convert File to Midi
-# midi_filename=ap.transcribe(file=filename, mode=mode, output_dir=output_dir)
-midi_filename="Midi/happy_birthday.mid"
 
-# Save wav form of Midi
-ap.toWav(midi_filename)
+# midi_filename=audio2midi(file=filename, mode=mode)
 
-# Visualise Midi
-ap.visualise(midi_filename)
+# midi_filename="Data/Midi/Birthday/happy_birthday.mid"
+
+# Preprocess Midi File
+# processed_filename=preprocess(midi_filename)
 
 # Extract Melody from Midi and Save to Midi
 
-melody_midi_filename=ap.extractMelody(midi_filename)
-
-# Save wav form of Melody
-ap.toWav(melody_midi_filename)
-
-# Visualise melody
-ap.visualise(melody_midi_filename)
+# melody_midi_filename=extractMelody(processed_filename)
 
 
+# extractNotes(processed_folder)
 
 
-
+# processed_folder=preprocessFolder("Data/Midi/2018")
+melody_folder=extractMelodyFolder("Data/Midi/2018_processed")
