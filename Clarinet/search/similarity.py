@@ -2,5 +2,5 @@
 def sim(a:str,b:str):
     return
 
-def distance()
+def distance():
     return
