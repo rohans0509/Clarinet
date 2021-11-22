@@ -166,11 +166,17 @@ def w_interval(note_a, note_b):
     # If same scale find degree difference
     if note_a.scale == note_b.scale:
         if note_a.scale == "major":
-            degree_a = MAJOR_DEG[note_a.note]
-            degree_b = MAJOR_DEG[note_b.note]
+            try:
+                degree_a = MAJOR_DEG[note_a.note]
+                degree_b = MAJOR_DEG[note_b.note]
+            except:
+                pass
         elif note_a.scale == "minor":
-            degree_a = MINOR_DEG[note_a.note]
-            degree_b = MINOR_DEG[note_b.note]
+            try:
+                degree_a = MINOR_DEG[note_a.note]
+                degree_b = MINOR_DEG[note_b.note]
+            except:
+                pass
         return DEG_DIFF[abs(degree_a - degree_b)]
     else:
         # If different scales return absolute difference
