@@ -1,7 +1,7 @@
 
 import math
 from math import inf
-
+from tqdm import tqdm
 class Note:
     def __init__(self, note, duration, rest=False, scale="major"):
         self.note = note
@@ -237,6 +237,7 @@ def similarity(query:list,data:list):
 
     start=-1
     end=-1
+    pbar=tqdm(total=data_len)
 
     while end<data_len:
         start=start+1
@@ -248,6 +249,7 @@ def similarity(query:list,data:list):
         edit_distance=distance(s1,s2)
         if edit_distance<score:
             score=edit_distance
+        pbar.update(1)
 
     sim=1-score/query_len
     return(sim)
