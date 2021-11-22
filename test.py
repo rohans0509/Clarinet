@@ -36,3 +36,4 @@ def extractNotes(path):
 
 
 extractNotes("Data/Melody/2018_processed")
+
