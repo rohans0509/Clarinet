@@ -26,5 +26,10 @@ mode = "music-piano-v2"
 # extractNotes(processed_folder)
 
 
-# processed_folder=preprocessFolder("Data/Midi/2018")
-melody_folder=extractMelodyFolder("Data/Midi/2018_queries")
+processed_folder=preprocessFolder("Data/Midi/2018_clipped")
+melody_folder=extractMelodyFolder("Data/Midi/2018_clipped_processed")
+
+processed_folder=preprocessFolder("Data/Midi/2018_queries")
+melody_folder=extractMelodyFolder("Data/Midi/2018_queries_processed")
+
+
