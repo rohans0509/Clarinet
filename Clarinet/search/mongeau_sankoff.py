@@ -240,7 +240,7 @@ def similarity(query: list, data: list):
 
     start = -1
     end = -1
-    pbar = tqdm(total=int(data_len/query_len))
+    pbar = tqdm(total=int(data_len/query_len) + 1)
 
     while end < data_len:
         start = start+1
