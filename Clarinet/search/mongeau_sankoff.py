@@ -169,15 +169,17 @@ def w_interval(note_a, note_b):
             try:
                 degree_a = MAJOR_DEG[note_a.note]
                 degree_b = MAJOR_DEG[note_b.note]
+                return DEG_DIFF[abs(degree_a - degree_b)]
             except:
-                pass
+                return TON[abs(note_a.pitch - note_b.pitch)]
         elif note_a.scale == "minor":
             try:
                 degree_a = MINOR_DEG[note_a.note]
                 degree_b = MINOR_DEG[note_b.note]
+                return DEG_DIFF[abs(degree_a - degree_b)]
             except:
-                pass
-        return DEG_DIFF[abs(degree_a - degree_b)]
+                return TON[abs(note_a.pitch - note_b.pitch)]
+
     else:
         # If different scales return absolute difference
         return TON[abs(note_a.pitch - note_b.pitch)]
