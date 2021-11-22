@@ -227,7 +227,27 @@ def distance(s1, s2):
     return dp[m][n]
 
 
-def similarity(s1, s2):
-    d = distance(s1, s2)
-    sim = 1-d/len(s1)
+def similarity(query:list,data:list):
+    query_len=len(query)
+    data_len=len(data)
+
+    s1=query
+
+    score=float("inf")
+
+    start=-1
+    end=-1
+
+    while end<data_len:
+        start=start+1
+        end=min(start+query_len,data_len)
+
+        s2=data[start:end]
+        
+
+        edit_distance=distance(s1,s2)
+        if edit_distance<score:
+            score=edit_distance
+
+    sim=1-score/query_len
     return(sim)
