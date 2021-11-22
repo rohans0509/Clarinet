@@ -39,3 +39,6 @@ When reading file, we will clip pitch to -128 to 128 OR just ingore notes with h
 at every instant only one note playing
 
 also account for time while humming
+
+
+composer detection
