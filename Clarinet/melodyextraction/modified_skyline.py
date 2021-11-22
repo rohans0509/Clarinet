@@ -117,7 +117,11 @@ def mskyline(filename, instr_idx=0):
             
     midi_melody = MidiFile()
     midi_melody.markers = midi.markers
+    midi_melody.ticks_per_beat = midi.ticks_per_beat
     midi_melody.tempo_changes = midi.tempo_changes
+    midi_melody.lyrics = midi.lyrics
+    midi_melody.key_signature_changes = midi.key_signature_changes
+    midi_melody.time_signature_changes = midi.time_signature_changes
     piano_track = Instrument(0, is_drum=False, name='piano')
     piano_track.notes = final_notes
     midi_melody.instruments = [piano_track]
