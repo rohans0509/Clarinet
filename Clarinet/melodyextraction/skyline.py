@@ -11,7 +11,7 @@ from miditoolkit.midi.containers import Instrument
 
 
 def skyline(filename, instr_idx=0):
-    mido_obj=miditoolkit.midi.parser.MidiFile(filename)
+    mido_obj = miditoolkit.midi.parser.MidiFile(filename)
     '''Melody extraction based on Skyline algorithm
     Based on https://dl.acm.org/doi/10.1145/319463.319470
     Args:
@@ -38,15 +38,9 @@ def skyline(filename, instr_idx=0):
             note.end = min(note.end, starts[si+1])  # no space left b/w notes here hence yayyyy
         skyline_notes.append(note)
     new_midi_obj = miditoolkit.midi.parser.MidiFile()
-    midi_melody.markers = midi.markers
-    midi_melody.ticks_per_beat = midi.ticks_per_beat
-    midi_melody.tempo_changes = midi.tempo_changes
-    midi_melody.lyrics = midi.lyrics
-    midi_melody.key_signature_changes = midi.key_signature_changes
-    midi_melody.time_signature_changes = midi.time_signature_changes
+    new_midi_obj.markers = mido_obj.markers
+    new_midi_obj.tempo_changes = mido_obj.tempo_changes
     piano_track = Instrument(0, is_drum=False, name='piano')
     piano_track.notes = skyline_notes
     new_midi_obj.instruments = [piano_track]
     return new_midi_obj
-
-

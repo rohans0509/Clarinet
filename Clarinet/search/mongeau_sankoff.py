@@ -2,6 +2,8 @@
 import math
 from math import inf
 from tqdm import tqdm
+
+
 class Note:
     def __init__(self, note, duration, rest=False, scale="major"):
         self.note = note
@@ -12,6 +14,7 @@ class Note:
 
     def __eq__(self, obj: object) -> bool:
         return isinstance(obj, Note) and obj.duration == self.duration and obj.pitch == self.pitch and obj.rest == self.rest
+
 
 # Constants from original paper:
 K1 = 0.348
@@ -73,18 +76,18 @@ F = 0
 C = 0
 
 NOTE_PITCH = {
-    "C":12,
-    "C#":13 ,
-    "D":14,
-    "D#":15,
-    "E":16,
-    "F":17,
-    "F#":18 ,
-    "G":19,
-    "G#":20,
-    "A":21,
-    "A#":22,
-    "B":23 
+    "C": 12,
+    "C#": 13,
+    "D": 14,
+    "D#": 15,
+    "E": 16,
+    "F": 17,
+    "F#": 18,
+    "G": 19,
+    "G#": 20,
+    "A": 21,
+    "A#": 22,
+    "B": 23
 }
 
 
@@ -227,29 +230,28 @@ def distance(s1, s2):
     return dp[m][n]
 
 
-def similarity(query:list,data:list):
-    query_len=len(query)
-    data_len=len(data)
+def similarity(query: list, data: list):
+    query_len = len(query)
+    data_len = len(data)
 
-    s1=query
+    s1 = query
 
-    score=float("inf")
+    score = float("inf")
 
-    start=-1
-    end=-1
-    pbar=tqdm(total=data_len)
+    start = -1
+    end = -1
+    pbar = tqdm(total=int(data_len/query_len))
 
-    while end<data_len:
-        start=start+1
-        end=min(start+query_len,data_len)
+    while end < data_len:
+        start = start+1
+        end = min(start+query_len, data_len)
 
-        s2=data[start:end]
-        
+        s2 = data[start:end]
 
-        edit_distance=distance(s1,s2)
-        if edit_distance<score:
-            score=edit_distance
+        edit_distance = distance(s1, s2)
+        if edit_distance < score:
+            score = edit_distance
         pbar.update(1)
 
-    sim=1-score/query_len
+    sim = 1-score/query_len
     return(sim)
