@@ -6,9 +6,9 @@ from tqdm import tqdm
 from Clarinet.preprocessing.clipper import condition, clip
 
 
-path = 'Data/Midi/2018/'
+path = 'Data/Midi/2018_clipped/'
 
 # loop through all files in folder Data/Midi/2018
-for file in tqdm(os.listdir('Data/Midi/2018')):
+for file in tqdm(os.listdir('Data/Midi/2018_clipped')):
     clipped = clip(path + file, 'query')
     clipped.dump('Data/Midi/2018_queries/' + file.split('.')[0] + '_query.mid')
