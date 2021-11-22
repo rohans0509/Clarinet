@@ -29,11 +29,11 @@ def extractNotes(path):
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
 
-    filename = f"{output_dir}/melody_notes.json"
+    filename = f"{output_dir}/notes.json"
 
     with open(filename, 'w') as f:
         json.dump(fname_to_notes, f)
 
 
-extractNotes("Data/Melody/2018_processed")
-
+if __name__ == "__main__":
+    extractNotes("Data/Midi/2018_queries")
