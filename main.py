@@ -27,4 +27,4 @@ mode = "music-piano-v2"
 
 
 # processed_folder=preprocessFolder("Data/Midi/2018")
-melody_folder=extractMelodyFolder("Data/Midi/2018_processed")
+melody_folder=extractMelodyFolder("Data/Midi/2018_clipped")

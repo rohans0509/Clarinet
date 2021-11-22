@@ -2,6 +2,17 @@
 import math
 from math import inf
 
+class Note:
+    def __init__(self, note, duration, rest=False, scale="major"):
+        self.note = note
+        self.pitch = NOTE_PITCH[note]
+        self.rest = rest
+        self.duration = duration
+        self.scale = scale
+
+    def __eq__(self, obj: object) -> bool:
+        return isinstance(obj, Note) and obj.duration == self.duration and obj.pitch == self.pitch and obj.rest == self.rest
+
 # Constants from original paper:
 K1 = 0.348
 
@@ -60,6 +71,21 @@ D = 0.6
 F = 0
 
 C = 0
+
+NOTE_PITCH = {
+    "C":12,
+    "C#":13 ,
+    "D":14,
+    "D#":15,
+    "E":16,
+    "F":17,
+    "F#":18 ,
+    "G":19,
+    "G#":20,
+    "A":21,
+    "A#":22,
+    "B":23 
+}
 
 
 # Insertion Weight
@@ -151,18 +177,6 @@ def w_interval(note_a, note_b):
 # Duration Weight
 def w_len(duration_a, duration_b):
     return abs(duration_a - duration_b)
-
-
-class Note:
-    def __init__(self, note, pitch, duration, rest=False, scale="major"):
-        self.note = note
-        self.pitch = pitch
-        self.rest = rest
-        self.duration = duration
-        self.scale = scale
-
-    def __eq__(self, obj: object) -> bool:
-        return isinstance(obj, Note) and obj.duration == self.duration and obj.pitch == self.pitch and obj.rest == self.rest
 
 
 def distance(s1, s2):
