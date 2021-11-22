@@ -1,11 +1,10 @@
-
 import math
 from math import inf
 
 # Constants from original paper:
 K1 = 0.348
 
-# weights for intervals out of scale
+# Weights for intervals out of scale
 TON = {
 	0: 0.6,
 	1: 2.6,
@@ -185,9 +184,6 @@ def distance(s1, s2):
 	for j in range(1,len(s2)+1):
 		dp[0][j]=dp[0][j-1]+w_ins(s2[j-1])
 
-
-
-
 	for i in range(m+1):
 		note_a=s1[i-1]
 		for j in range(n+1):
@@ -211,5 +207,3 @@ def similarity(s1,s2):
 	d=distance(s1,s2)
 	sim=1-d/len(s1)
 	return(sim)
-
-
