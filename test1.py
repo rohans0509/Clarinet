@@ -9,10 +9,6 @@ iters = [
     ["_query_processed/", "_processed/", "time", "skyline", True],
     ["_query_modified/", "_modified/", "time", "modified", False],
     ["_query_processed_modified/", "_processed_modified/", "time", "modified", True],
-    ["_query/", "/", "text", "skyline", False],
-    ["_query_processed/", "_processed/", "text", "skyline", True],
-    ["_query_modified/", "_modified/", "text", "modified", False],
-    ["_query_processed_modified/", "_processed_modified/", "text", "modified", True],
 ]
 
 for tup in tqdm(iters):
