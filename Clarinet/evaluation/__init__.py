@@ -4,18 +4,19 @@ import miditoolkit
 from tqdm import tqdm
 from Clarinet.search.similarity_time import midiEt_to_note_sequence, midiEt_to_note, splitNotes, getStrides
 from Clarinet.search import similarity, Note
-
+import time
 
 factor = 768
 
 
-def evaluate(query_json, data_json, output_file="res", similarity_algo="text"):
+def evaluate(query_json, data_json, similarity_algo="text", melody_algo="skyline", processing=False):
     with open(data_json, 'r') as f:
         fname_to_notes = json.load(f)
     with open(query_json, 'r') as f:
         query_to_notes = json.load(f)
 
     res = {}
+    t1 = time.time()
     for query_name, query_notes in tqdm(query_to_notes.items()):
         qnotes = [note[0] for note in query_notes]
         query = midiEt_to_note_sequence(qnotes)
@@ -65,12 +66,31 @@ def evaluate(query_json, data_json, output_file="res", similarity_algo="text"):
 
         fname_to_similarity = dict(sorted(fname_to_similarity.items(), key=lambda item: item[1], reverse=True))
         res[query_name] = fname_to_similarity
-    if output_file == "res":
-        output_file = f"res_{similarity_algo}.json"
+
+    t2 = time.time()
+
+    if processing:
+        output_file = f"res_{similarity_algo}_{melody_algo}_processed.json"
+    else:
+        output_file = f"res_{similarity_algo}_{melody_algo}.json"
+
+    try:
+        with open("timeres.json", 'r') as f:
+            timedict = json.load(f)
+        timedict[output_file] = t2-t1
+    except:
+        timedict = {}
+        timedict[output_file] = t2-t1
+
+    with open("timeres.json", 'w') as f:
+        json.dump(timedict, f)
 
     with open(output_file, 'w') as f:
         json.dump(res, f)
 
 
 if __name__ == "__main__":
-    evaluate(r"C:\Users\Kshitij Alwadhi\Documents\GitHub\Clarinet\Data\Json\2018_queries\melody.json", r"C:\Users\Kshitij Alwadhi\Documents\GitHub\Clarinet\Data\Json\2018_clipped\melody.json", similarity_algo="text")
+    data_file = r"C:\Users\Kshitij Alwadhi\Documents\GitHub\Clarinet\Data\Json\2018_clipped\melody.json"
+    query_file = r"C:\Users\Kshitij Alwadhi\Documents\GitHub\Clarinet\Data\Json\2018_queries\melody.json"
+
+    evaluate(query_file, data_file, similarity_algo="time", melody_algo="skyline", processing=False)
