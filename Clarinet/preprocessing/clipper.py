@@ -7,11 +7,10 @@ offset_for_doc = 0
 time_for_query = 5
 offset_for_query = np.random.rand() * 14
 
-
-def condition(note, ticks, method='doc', offset=0):
+def condition(note, ticks, method = 'doc', offset = 0):
     if method == 'doc':
         if note.start <= ticks*(time_for_doc+offset_for_doc+offset) and note.start >= (offset_for_doc+offset)*ticks:
-            note.end = round(min(note.end, ticks*(time_for_doc+offset_for_doc+offset))) - round((offset+offset_for_doc)*ticks)
+            note.end = round(min(note.end,ticks*(time_for_doc+offset_for_doc+offset))) - round((offset+offset_for_doc)*ticks)
             note.start = note.start - round((offset+offset_for_doc)*ticks)
             return True
         return False
@@ -22,15 +21,26 @@ def condition(note, ticks, method='doc', offset=0):
             return True
         return False
 
-
-def clip(filename, mode='doc'):
+def clip(filename, mode = 'doc'):
     midi = MidiFile(filename)
-    notes = sorted(midi.instruments[0].notes, key=lambda x: x.start)
+    notes = sorted(midi.instruments[0].notes, key = lambda x: x.start)
     ticks = 1/midi.get_tick_to_time_mapping()[1]
     if mode == 'doc':
-        final_notes = [note for note in notes if condition(note, ticks=ticks, method=mode)]
+        final_notes = [note for note in notes[:-1] if condition(note, ticks = ticks, method = mode)]
+        end = notes[-1].end
+        if condition(notes[-1], ticks, mode):
+            notes[-1].end = end - round((offset_for_doc)*ticks)
+            final_notes.append(notes[-1])
     elif mode == 'query':
-        final_notes = [note for note in notes if condition(note, ticks=ticks, method=mode)]
+        final_notes = [note for note in notes[:-1] if condition(note, ticks = ticks, method = mode)]
+        end = notes[-1].end
+        if condition(notes[-1], ticks, mode):
+            notes[-1].end = end  - round((offset_for_query)*ticks)
+            final_notes.append(notes[-1])
+    starter = final_notes[0].start
+    for note in final_notes:
+        note.start -= starter
+        note.end -= starter
     midi_melody = MidiFile()
     midi_melody.markers = midi.markers
     midi_melody.ticks_per_beat = midi.ticks_per_beat
@@ -42,9 +52,3 @@ def clip(filename, mode='doc'):
     piano_track.notes = final_notes
     midi_melody.instruments = [piano_track]
     return midi_melody
-
-#mili_final = clip('test.mid')
-# mili_final.dump('test_clip.mid')
-
-#mili_query = clip('test.mid',mode='query')
-# mili_query.dump('test_clip_query.mid')

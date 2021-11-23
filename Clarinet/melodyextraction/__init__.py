@@ -10,7 +10,11 @@ strategies={
 def extractMelody(file, output_dir="Data/Melody",strategy="modified-skyline"):
     folder_name,filename=file.split('/')[-2],file.split('/')[-1].split('.')[0]
 
-    output_dir=f"{output_dir}/{folder_name}"
+    if strategy=="modified-skyline":
+        output_dir=f"{output_dir}/{folder_name}_modified"
+    else:
+        output_dir=f"{output_dir}/{folder_name}"
+
 
     strategy=strategies[strategy]
 
