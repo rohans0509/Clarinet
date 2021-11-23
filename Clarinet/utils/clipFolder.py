@@ -3,7 +3,7 @@ from Clarinet.preprocessing import clipFile
 from tqdm import tqdm
 
 def clipFolder(data_dir):
-    print("Clipping folder...")
+    print("Clipping folder ...")
 
     # Get all midi files in the data directory
     midi_files = [f for f in os.listdir(data_dir) if f.endswith(".mid") or f.endswith(".midi")]
