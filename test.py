@@ -1,5 +1,8 @@
 from Clarinet.evaluation import *
 from tqdm import tqdm
+import itertools
+from multiprocessing.dummy import Pool as ThreadPool 
+from functools import partial
 
 path = "Data/Json/Consolidated"
 ext = "notes.json"
@@ -14,6 +17,13 @@ iters = [
     ["_query_modified/", "_modified/", "text", "modified", False],
     ["_query_processed_modified/", "_processed_modified/", "text", "modified", True],
 ]
+num_processes=4
+pool = ThreadPool(num_processes)
+first=[path+tup[0]+ext for tup in iters]
+second=[path+tup[1]+ext for tup in iters]
+third=[tup[2] for tup in iters]
+fourth=[tup[3] for tup in iters]
+fifth=[tup[4] for tup in iters]
 
-for tup in iters:
-    evaluate(path+tup[0]+ext, path+tup[1]+ext, tup[2], tup[3], tup[4])
+zipped_input=zip(first,second,third,fourth,fifth)
+pool.starmap(evaluate,zipped_input)
