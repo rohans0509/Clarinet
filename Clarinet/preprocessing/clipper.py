@@ -2,10 +2,10 @@ from miditoolkit.midi.containers import Instrument
 from miditoolkit.midi.parser import MidiFile
 import numpy as np
 
-time_for_doc = 40
+time_for_doc = 20
 offset_for_doc = 0
 time_for_query = 5
-offset_for_query = np.random.rand() * 20
+offset_for_query = np.random.rand() * 14
 
 def condition(note, ticks, method = 'doc', offset = 0):
     if method == 'doc':
