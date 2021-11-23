@@ -161,5 +161,3 @@ def getBPM(filename:str):
         print("The file does not exist")
 
     return(bpm)
-
-getBPM("/Users/rohansharma/Desktop/IIT DELHI/Academics/Sem 5/COL764/Clarinet/Data/Melody/Birthday_processed/happy_birthday_melody.mid")
