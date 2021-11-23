@@ -18,7 +18,7 @@ class Note:
 
 # Constants from original paper:
 #K1 = 0.348
-K1 = 0.2
+K1 = 1
 
 # weights for intervals out of scale
 TON = {
