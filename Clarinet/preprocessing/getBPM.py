@@ -8,6 +8,12 @@ import numpy
 import pywt
 from scipy import signal
 
+import sys
+  
+sys.path.insert(0, '..')
+from Clarinet.converter import midi2audio
+
+import os
 
 def read_wav(filename):
     # open file, get metadata for audio
@@ -31,7 +37,6 @@ def read_wav(filename):
         assert nsamps == len(samps)
     except AssertionError:
         print(nsamps, "not equal to", len(samps))
-
 
     return samps, fs
 
@@ -107,9 +112,16 @@ def bpm_detector(data, fs):
     return bpm, correl
 
 
-def getBPM(filename):
+def getBPM(filename:str):
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir("../..")
+    os.chdir("Data/TemporaryFiles")
+    
+    wav_filename=midi2audio(filename,output_dir=os.getcwd())
+
+    
     window=3
-    samps, fs = read_wav(filename)
+    samps, fs = read_wav(wav_filename)
     data = []
     correl = []
     bpm = 0
@@ -142,4 +154,12 @@ def getBPM(filename):
         n = n + 1
 
     bpm = numpy.median(bpms)
+
+    if os.path.exists(wav_filename):
+        os.remove(wav_filename)
+    else:
+        print("The file does not exist")
+
     return(bpm)
+
+getBPM("/Users/rohansharma/Desktop/IIT DELHI/Academics/Sem 5/COL764/Clarinet/Data/Melody/Birthday_processed/happy_birthday_melody.mid")
