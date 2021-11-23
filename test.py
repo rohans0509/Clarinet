@@ -1,39 +1,19 @@
-import json
-import miditoolkit
-import os
+from Clarinet.evaluation import *
 from tqdm import tqdm
 
+path = "Data/Json/Consolidated"
+ext = "notes.json"
 
-def extractNotes(path):
+iters = [
+    ["_query/", "/", "time", "skyline", False],
+    ["_query_processed/", "_processed/", "time", "skyline", True],
+    ["_query_modified/", "_modified/", "time", "modified", False],
+    ["_query_processed_modified/", "_processed_modified/", "time", "modified", True],
+    ["_query/", "/", "text", "skyline", False],
+    ["_query_processed/", "_processed/", "text", "skyline", True],
+    ["_query_modified/", "_modified/", "text", "modified", False],
+    ["_query_processed_modified/", "_processed_modified/", "text", "modified", True],
+]
 
-    files = os.listdir(path)
-
-    fname_to_notes = {}
-
-    print("Extracting notes...")
-    for fname in tqdm(files):
-        mid_in = miditoolkit.midi.parser.MidiFile(os.path.join(path, fname))
-        notes = mid_in.instruments[0].notes
-        notes = sorted(notes, key=lambda x: x.start)
-        lis = []  # (pitch,start,end,velocity)
-        for e in notes:
-            lis.append([e.pitch, e.start, e.end, e.velocity])
-        fname_to_notes[fname] = lis
-
-    folder_name = path.split('/')[-1]
-
-    output_dir = "Data/Json"
-
-    output_dir = f"{output_dir}/{folder_name}"
-
-    if not os.path.exists(output_dir):
-        os.mkdir(output_dir)
-
-    filename = f"{output_dir}/melody.json"
-
-    with open(filename, 'w') as f:
-        json.dump(fname_to_notes, f)
-
-
-if __name__ == "__main__":
-    extractNotes("Data/Melody/2018_queries")
+for tup in iters:
+    evaluate(path+tup[0]+ext, path+tup[1]+ext, tup[2], tup[3], tup[4])
