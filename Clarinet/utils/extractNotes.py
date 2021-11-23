@@ -35,6 +35,3 @@ def extractNotes(path):
 
     with open(filename,'w') as f:
         json.dump(fname_to_notes, f)
-
-if __name__=="__main__":
-    extractNotes("Data/Midi/2018")

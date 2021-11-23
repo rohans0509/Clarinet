@@ -9,8 +9,12 @@ def extractMelodyFolder(data_dir,strategy):
 
     # Process each midi file
     for midi_file in tqdm(midi_files):
-        out=extractMelody(os.path.join(data_dir, midi_file),strategy=strategy)
-
+        try:
+            out=extractMelody(os.path.join(data_dir, midi_file),strategy=strategy)
+        except:
+            print("-----------")
+            print(midi_file)
+            print("-----------")
     return(out)
 
 if __name__=="__main__":

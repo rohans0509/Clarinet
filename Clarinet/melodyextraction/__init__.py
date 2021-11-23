@@ -26,4 +26,4 @@ def extractMelody(file, output_dir="Data/Melody",strategy="modified-skyline"):
     out=f"{output_dir}/{filename}_melody.mid"
 
     mid_out.dump(out)
-    return(out)
+    return(output_dir)

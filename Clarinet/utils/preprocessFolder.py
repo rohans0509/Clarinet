@@ -10,6 +10,11 @@ def preprocessFolder(data_dir):
 
     # Process each midi file
     for midi_file in tqdm(midi_files):
-        out=preprocess(os.path.join(data_dir, midi_file))
+        try:
+            out=preprocess(os.path.join(data_dir, midi_file))
+        except:
+            print("-----------")
+            print(midi_file)
+            print("-----------")
     out="/".join(out.split("/")[:-1])
     return(out)
