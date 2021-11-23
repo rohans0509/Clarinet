@@ -6,6 +6,7 @@ from search.similarity_time import midiEt_to_note_sequence, midiEt_to_note, spli
 from search.similarity_sankoff import similarity as similarity_sankoff
 from search.similarity_text import similarity as similarity_text
 from search.similarity_time import similarity as similarity_time
+from search.similarity_sankoff import Note
 
 
 factor = 768
@@ -32,6 +33,15 @@ def evaluate(query_json, data_json, output_file="res", similarity_algo="text"):
 
     for query_name, query_notes in query_to_notes.items():
         fname_to_similarity = {}
+        if similarity_algo == "sankoff":
+            qrep = []
+            prev_end = 0
+            for n in notes:
+                if n[1] > prev_end:
+                    qrep.append(Note("C", int((n[1]-prev_end)/t), rest=True))
+                qrep.append(Note(midiEt_to_note[n[0] % 12 + 12], int((n[2]-n[1])/t), rest=False))
+                prev_end = n[2]
+
         for fname in fname_to_notes:
             sim = 0
             notes = fname_to_notes[fname]
@@ -52,9 +62,20 @@ def evaluate(query_json, data_json, output_file="res", similarity_algo="text"):
                 sim = max(sim, similarity(query_notes, note_sequence, similarity_algo))
 
             elif similarity_algo == "sankoff":
-                pass
+                end_time = notes[-1][2]
+                tempo = 120
+                t = end_time/(4*tempo)
+                rep = []
+                prev_end = 0
+                for n in notes:
+                    if n[1] > prev_end:
+                        rep.append(Note("C", int((n[1]-prev_end)/t), rest=True))
+                    rep.append(Note(midiEt_to_note[n[0] % 12 + 12], int((n[2]-n[1])/t), rest=False))
+                    prev_end = n[2]
+                sim = similarity(qrep, rep, similarity_algo)
 
             fname_to_similarity[fname] = sim
+
         fname_to_similarity = dict(sorted(fname_to_similarity.items(), key=lambda item: item[1], reverse=True))
         res[query_name] = fname_to_similarity
 
