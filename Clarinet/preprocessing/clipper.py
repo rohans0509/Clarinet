@@ -52,8 +52,3 @@ def clip(filename, mode = 'doc'):
     piano_track.notes = final_notes
     midi_melody.instruments = [piano_track]
     return midi_melody
-
-#midi_final = clip('test.mid')
-#midi_final.dump('test_clip.mid')
-#midi_query = clip('test.mid',mode='query')
-#midi_query.dump('test_clip_query.mid')
