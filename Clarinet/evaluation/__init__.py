@@ -11,6 +11,7 @@ factor = 768
 
 
 def evaluate(query_json, data_json, similarity_algo="text", melody_algo="skyline", processing=False):
+    random.seed(42)
     with open(data_json, 'r') as f:
         fname_to_notes = json.load(f)
     with open(query_json, 'r') as f:
