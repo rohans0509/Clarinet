@@ -17,7 +17,8 @@ class Note:
 
 
 # Constants from original paper:
-K1 = 0.348
+#K1 = 0.348
+K1 = 0.2
 
 # weights for intervals out of scale
 TON = {
@@ -245,6 +246,7 @@ def similarity(query: list, data: list):
     s1 = query
 
     score = float("inf")
+    best_data = []
 
     start = -1
     end = -1
@@ -259,7 +261,15 @@ def similarity(query: list, data: list):
         edit_distance = distance(s1, s2)
         if edit_distance < score:
             score = edit_distance
+            best_data = s2
         pbar.update(1)
+
+    # for i in range(len(query)):
+    #     q = query[i]
+    #     r = best_data[i]
+    #     print("------------_--")
+    #     print(q.note, q.duration, q.rest)
+    #     print(r.note, r.duration, r.rest)
 
     sim = 1-score/query_len
     return(sim)
