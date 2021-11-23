@@ -13,8 +13,10 @@ pip install midi2audio
 pip install miditoolkit
 pip install mido
 pip install music21
+pip install PyWavelets
 
 # apt install fluidsynth / brew install fluidsynth
 # apt install ffmpeg / brew install ffmpeg
-
+# export PYTHONPATH=’PATH_TO_CLARINET_FILES’----MAC
+# set PYTHONPATH=’PATH_TO_CLARINET_FILES’----- WINDOWS
 
