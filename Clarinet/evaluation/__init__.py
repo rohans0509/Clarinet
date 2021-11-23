@@ -21,7 +21,7 @@ def evaluate(query_json, data_json, similarity_algo="text", melody_algo="skyline
     qnames = list(query_to_notes.keys())
     random.shuffle(qnames)
     qnames = qnames[:40]
-    for query_name in tqdm(qnames):
+    for query_name in tqdm(qnames, leave=False):
         query_notes = query_to_notes[query_name]
         qnotes = [note[0] for note in query_notes]
         query = midiEt_to_note_sequence(qnotes)
@@ -34,7 +34,7 @@ def evaluate(query_json, data_json, similarity_algo="text", melody_algo="skyline
                     qrep.append(Note("C", int((n[1]-prev_end)/t), rest=True))
                 qrep.append(Note(midiEt_to_note[n[0] % 12 + 12], int((n[2]-n[1])/t), rest=False))
                 prev_end = n[2]
-        for fname in fname_to_notes:
+        for fname in tqdm(fname_to_notes, leave=False):
             sim = 0
             notes = fname_to_notes[fname]
 
