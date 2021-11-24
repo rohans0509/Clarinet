@@ -1,10 +1,10 @@
 import json
 import numpy as np
+import os
 
-fname = 'res_text.json'
-
-with open(fname) as json_file:
-    data = json.load(json_file)
+bad_queries = ['MIDI-Unprocessed_Schubert7-9_MID--AUDIO_11_R2_2018_wav_melody.mid',
+               'ORIG-MIDI_03_7_10_13_Group_MID--AUDIO_18_R3_2013_wav--3_melody.mid'
+               ]
 
 
 def getRecall(posn):
@@ -73,3 +73,35 @@ def getAvgConfidence():
         average_score += sim
     average_score /= len(data)
     return average_score
+
+
+if __name__ == '__main__':
+    results = {}
+    files = os.listdir(os.getcwd())
+    for f in files:
+        if f.endswith('.json'):
+            with open(f) as json_file:
+                data = json.load(json_file)
+            for q in bad_queries:
+                del data[q]
+            recall1 = getRecall(1)
+            recall3 = getRecall(3)
+            recall5 = getRecall(5)
+            recall10 = getRecall(10)
+            mean_rank = getMeanRank()
+            norm_sim = getNormSim()
+            margin = getMargin()
+            avg_confidence = getAvgConfidence()
+            results[f] = {
+                'recall1': recall1,
+                'recall3': recall3,
+                'recall5': recall5,
+                'recall10': recall10,
+                'mean_rank': mean_rank,
+                'norm_sim': norm_sim,
+                'margin': margin,
+                'avg_confidence': avg_confidence
+            }
+
+    with open('results.json', 'w') as outfile:
+        json.dump(results, outfile)

@@ -11,6 +11,7 @@ factor = 768
 
 
 def evaluate(query_json, data_json, similarity_algo="text", melody_algo="skyline", processing=False):
+    random.seed(42)
     with open(data_json, 'r') as f:
         fname_to_notes = json.load(f)
     with open(query_json, 'r') as f:
@@ -79,12 +80,22 @@ def evaluate(query_json, data_json, similarity_algo="text", melody_algo="skyline
         output_file = f"res_{similarity_algo}_{melody_algo}.json"
 
     try:
-        with open("Results/timeres.json", 'r') as f:
-            timedict = json.load(f)
-        timedict[output_file] = t2-t1
+        try:
+            with open("Results/timeres.json", 'r') as f:
+                timedict = json.load(f)
+            timedict[output_file] = t2-t1
+        except:
+            timedict = {}
+            timedict[output_file] = t2-t1
     except:
-        timedict = {}
-        timedict[output_file] = t2-t1
+        time.sleep(2)
+        try:
+            with open("Results/timeres.json", 'r') as f:
+                timedict = json.load(f)
+            timedict[output_file] = t2-t1
+        except:
+            timedict = {}
+            timedict[output_file] = t2-t1
 
     with open("Results/timeres.json", 'w') as f:
         json.dump(timedict, f)
