@@ -1,0 +1,9 @@
+Similarity Method,Melody Extractor,Processed,Mean Reciprocal Rank (MRR)
+Text,Modified,Unprocessed,1.0
+Text,Skyline,Unprocessed,1.0
+Time,Modified,Unprocessed,0.964285714285714
+Time,Skyline,Unprocessed,0.9000699888017911
+Text,Skyline,Processed,0.5926415698919699
+Text,Modified,Processed,0.5426692653263729
+Time,Modified,Processed,0.10282098790228099
+Time,Skyline,Processed,0.13353855096369302

@@ -75,6 +75,17 @@ def getAvgConfidence():
     return average_score
 
 
+def getMRR():
+    average = 0
+    for key, value in data.items():
+        target = key.replace("_query", "")
+        items = [filename for filename in value.keys()]
+        rank = items.index(target)+1
+        average += 1/rank
+    average /= len(data)
+    return average
+
+
 if __name__ == '__main__':
     results = {}
     files = os.listdir(os.getcwd())
@@ -92,6 +103,7 @@ if __name__ == '__main__':
             norm_sim = getNormSim()
             margin = getMargin()
             avg_confidence = getAvgConfidence()
+            mrr = getMRR()
             results[f] = {
                 'recall1': recall1,
                 'recall3': recall3,
@@ -100,7 +112,8 @@ if __name__ == '__main__':
                 'mean_rank': mean_rank,
                 'norm_sim': norm_sim,
                 'margin': margin,
-                'avg_confidence': avg_confidence
+                'avg_confidence': avg_confidence,
+                'mrr': mrr
             }
 
     with open('results.json', 'w') as outfile:
