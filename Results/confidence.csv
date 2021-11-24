@@ -1,0 +1,9 @@
+Similarity Method,Melody Extractor,Processed,Recall@1,Mean Confidence
+Text,Modified,Unprocessed,1.0,0.977548031603759
+Text,Skyline,Unprocessed,1.0,1.0
+Time,Modified,Unprocessed,0.9473684210526312,0.776451875636583
+Time,Skyline,Unprocessed,0.842105263157894,0.7840195143720831
+Text,Skyline,Processed,0.5263157894736841,0.717501670903259
+Text,Modified,Processed,0.473684210526315,0.676934886445381
+Time,Modified,Processed,0.052631578947368,0.431906578142318
+Time,Skyline,Processed,0.052631578947368,0.431845935807369

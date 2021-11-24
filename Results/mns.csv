@@ -1,0 +1,9 @@
+Similarity Method,Melody Extractor,Processed,MNS(Mean Normalised Similarity)
+Text,Modified,Unprocessed,1.0
+Text,Skyline,Unprocessed,1.0
+Time,Modified,Unprocessed,0.9993012555899552
+Time,Skyline,Unprocessed,0.98643432359159
+Text,Skyline,Processed,0.880408812983768
+Text,Modified,Processed,0.8478945838710381
+Time,Modified,Processed,0.721013492104118
+Time,Skyline,Processed,0.7535655106422401

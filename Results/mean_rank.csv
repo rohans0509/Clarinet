@@ -1,0 +1,9 @@
+Similarity Method,Melody Extractor,Processed,Mean Rank
+Text,Modified,Unprocessed,1.0
+Text,Skyline,Unprocessed,1.0
+Time,Modified,Unprocessed,1.184210526315789
+Time,Skyline,Unprocessed,11.078947368421051
+Text,Skyline,Processed,146.8421052631579
+Text,Modified,Processed,194.8421052631579
+Time,Modified,Processed,363.60526315789474
+Time,Skyline,Processed,329.0263157894737

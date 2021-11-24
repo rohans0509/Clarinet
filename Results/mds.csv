@@ -1,0 +1,9 @@
+Similarity Method,Melody Extractor,Processed,Recall@1,MD(Margin of Discrimination)
+Text,Modified,Unprocessed,1.0,0.285799738896554
+Text,Skyline,Unprocessed,1.0,0.290935881663468
+Time,Modified,Unprocessed,0.9473684210526312,0.191036947247793
+Time,Skyline,Unprocessed,0.842105263157894,0.202716185072259
+Text,Skyline,Processed,0.5263157894736841,0.123667042433517
+Text,Modified,Processed,0.473684210526315,0.100748767637108
+Time,Modified,Processed,0.052631578947368,0.000374297317617
+Time,Skyline,Processed,0.052631578947368,0.000265978986019
