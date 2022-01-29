@@ -93,9 +93,10 @@ def analyse(file):
     for q in bad_queries:
         del data[q]
     sorted_data={}
-    for key,value in data:
-        sorted_value={k: v for k, v in sorted(value.items(), key=lambda item: item[1])}
+    for key,value in data.items():
+        sorted_value={k: v for k, v in sorted(value.items(), key=lambda item: item[1],reverse=True)}
         sorted_data[key]=sorted_value
+    data = sorted_data
     recall1 = getRecall(data,1)
     recall3 = getRecall(data,3)
     recall5 = getRecall(data,5)
