@@ -1,11 +1,13 @@
 import miditoolkit
 import numpy as np
 import random
+random.seed(42)
 import os
 
 class NoiseModule:
-    def __init__(self, mido_obj,melody_channel=0):
+    def __init__(self,origName, mido_obj,melody_channel=0):
         self.mido_obj = mido_obj
+        self.origName = origName
         self.melody_channel = melody_channel
 
     def addNoiseToMelody(self):
@@ -14,11 +16,10 @@ class NoiseModule:
 
     def addNoiseToFull(self):
         # TODO : decide what all noise to add
-        self.addVelocityNoise(0,0.3)
-        self.addLengthNoise(0,0.3)
-        self.addPitchNoise(2,0.3)
-        self.addExtraNotes(0,0.2)
-        self.addExtraNotes(1,0.2)
+        self.addVelocityNoise(0,0.2)
+        self.addLengthNoise(0,0.2)
+        self.addPitchNoise(0,0.05)
+        self.addExtraNotes(0,0.1)
 
     def addVelocityNoise(self,channel,contamination,noise_perc=0.2):
         """
@@ -63,11 +64,14 @@ class NoiseModule:
                     try:
                         prev_end = self.mido_obj.instruments[channel].notes[i-1].end
                         cur_start = self.mido_obj.instruments[channel].notes[i].start
+                        cur_end = self.mido_obj.instruments[channel].notes[i].end
                         length = int((cur_start-prev_end)*thresh)
                         startnoise = random.randint(0,length)
                         endnoise = random.randint(0,length)
                         starttime = prev_end+startnoise
                         endtime = cur_start-endnoise
+                        if endtime - starttime > cur_start - cur_end:
+                            continue
                         prev_pitch = self.mido_obj.instruments[channel].notes[i-1].pitch
                         cur_pitch = self.mido_obj.instruments[channel].notes[i].pitch
                         pitch = random.randint(min(prev_pitch,cur_pitch),max(prev_pitch,cur_pitch))
@@ -95,6 +99,9 @@ class NoiseModule:
                         endnoise = random.randint(-noiseDisp,noiseDisp)
                         starttime = max(0,cur_start+startnoise)
                         endtime = cur_start+endnoise
+                        # check later
+                        if endtime - starttime > cur_start - cur_end:
+                            continue
                         prev_pitch = self.mido_obj.instruments[channel].notes[i-1].pitch
                         cur_pitch = self.mido_obj.instruments[channel].notes[i].pitch
                         next_pitch = self.mido_obj.instruments[channel].notes[i+1].pitch
@@ -149,10 +156,17 @@ class NoiseModule:
                     cur_start = self.mido_obj.instruments[channel].notes[i].start
                     cur_end = self.mido_obj.instruments[channel].notes[i].end
                     length = int((cur_start-prev_end)*thresh)
+                    if (cur_start<prev_end):
+                        print(self.origName)
+                        continue
                     startnoise = random.randint(-length,length)
                     endnoise = random.randint(-length,length)
-                    self.mido_obj.instruments[channel].notes[i].start = max(prev_end+startnoise,prev_start)
-                    self.mido_obj.instruments[channel].notes[i].end = min(cur_start+endnoise,cur_end)
+                    newstart = max(prev_end+startnoise,prev_start)
+                    newend = min(cur_start+endnoise,cur_end)
+                    if (newend-newstart) > (cur_end - cur_end):
+                        continue
+                    self.mido_obj.instruments[channel].notes[i].start = newstart
+                    self.mido_obj.instruments[channel].notes[i].end = newend
 
     def dumpNoiseMIDI(self,fname,folder):
         """
@@ -161,6 +175,7 @@ class NoiseModule:
         :param folder: folder to dump to
         """
         self.addNoiseToFull()
+        fname = fname.split('/')[-1]
         path = os.path.join(folder,fname.replace(".mid","_noise.mid"))
         self.mido_obj.dump(path)
 
