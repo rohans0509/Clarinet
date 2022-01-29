@@ -8,15 +8,15 @@ import miditoolkit
 
 
 query_dir="Data/Queries"
-collection_dir="Data/Collection"
+collection_dir="Data/Original Collection"
 output_dir="Results"
 
 def computeScores(query_dir,collection_dir,stride_length=0,similarity_type="text",output_dir="Results"):
     queries=midiFolderToDict(query_dir) 
-    query_filenames=queries.keys
+    query_filenames=queries.keys()
 
     collection=midiFolderToDict(collection_dir)
-    collection_filenames=collection.keys
+    collection_filenames=collection.keys()
 
     scores={} # Dict of form {query_num : {collection_num : sim}}
 
@@ -83,6 +83,9 @@ def midiFolderToDict(folder:str)->Dict: # Returns a dict of form {filelocation:t
     file_locations=[f"{folder}/{filename}" for filename in listdir(folder)]
     
     output_dict={}
-    for file in file_locations:
-        output_dict[file]=midiFileToText(file)
+    for file in tqdm(file_locations):
+        if file.endswith(".mid"):
+            output_dict[file]=midiFileToText(file)
     return(output_dict)
+
+computeScores(query_dir,collection_dir,stride_length=0,similarity_type="text",output_dir=output_dir)
