@@ -57,7 +57,7 @@ def copy_midi_files(folder1,folder2):
 #     copy_midi_files(f"Data/Original Collection/POP909/{folder}","Data/Original Collection")
 
 
-#generateNoisy("Data/Original Collection","Data/Noisy Collection")
+generateNoisy("Data/Original Collection","Data/Noisy Collection")
 
 # loop through all mid files in folder 1
 # for file in tqdm(os.listdir("Data/Original Collection")):
