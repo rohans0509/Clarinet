@@ -1,4 +1,6 @@
 from typing import Dict
+
+from numpy import sort
 from Clarinet.search import similarity
 from Clarinet.evaluation import analyse
 from os import listdir,path
@@ -12,14 +14,16 @@ collection_dir="Data/Original Collection"
 output_dir="Results"
 
 def computeScores(query_dir,collection_dir,stride_length=0,similarity_type="text",output_dir="Results"):
+    print("Reading queries....")
     queries=midiFolderToDict(query_dir) 
-    query_filenames=queries.keys()
+    query_filenames=list(queries.keys())
 
+    print("Reading collection....")
     collection=midiFolderToDict(collection_dir)
-    collection_filenames=collection.keys()
+    collection_filenames=list(collection.keys())
 
     scores={} # Dict of form {query_num : {collection_num : sim}}
-
+    print("Computing Similarities..")
     for i in tqdm(range(len(query_filenames))):
         query_filename=query_filenames[i]
         query_text=queries[query_filename]
@@ -80,10 +84,10 @@ def midiFileToText(filename,channel=0): # Takes input midi filename, outputs tex
     return "".join(out)
 
 def midiFolderToDict(folder:str)->Dict: # Returns a dict of form {filelocation:text_representation}
-    file_locations=[f"{folder}/{filename}" for filename in listdir(folder)]
+    file_locations=sort([f"{folder}/{filename}" for filename in listdir(folder)])
     
     output_dict={}
-    for file in tqdm(file_locations):
+    for file in tqdm(file_locations[:10]):
         if file.endswith(".mid"):
             output_dict[file]=midiFileToText(file)
     return(output_dict)

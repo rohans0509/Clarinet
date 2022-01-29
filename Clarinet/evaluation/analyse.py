@@ -1,10 +1,10 @@
 import json
+from pickle import TRUE
 import numpy as np
 import os
 import pandas as pd
 
-bad_queries = ['MIDI-Unprocessed_Schubert7-9_MID--AUDIO_11_R2_2018_wav_melody.mid',
-               'ORIG-MIDI_03_7_10_13_Group_MID--AUDIO_18_R3_2013_wav--3_melody.mid'
+bad_queries = [
                ]
 
 
@@ -42,7 +42,7 @@ def getNormSim(data):
     return average_score
 
 
-def getMargin(data,consider_only_top=False):
+def getMargin(data,consider_only_top=TRUE):
     average_score = 0
     total_len = len(data)
     for key, value in data.items():
@@ -117,7 +117,9 @@ def analyse(file):
     }
 
     df=pd.DataFrame(results.items(), columns=["Metric","Value"])
+    
+    df.index+=1
+    df.index.names = ['Index']
 
     
     return(df)
-
