@@ -15,9 +15,13 @@ def distance(s1:str,s2:str):
     return dp[m][n]
 
 
-def similarity(query:str,data:str):
+def similarity(query:str,data:str,stride_length=0):
+
     query_len=len(query)
     data_len=len(data)
+
+    if stride_length not in range(1,query_len+1):
+        stride_length=query_len
 
     s1=query
 

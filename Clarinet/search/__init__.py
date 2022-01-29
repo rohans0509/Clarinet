@@ -10,6 +10,6 @@ SIM_DICT = {
 }
 
 
-def similarity(query, data, similarity_type="text"):
+def similarity(query, data, similarity_type="text",stride_length=0):
     sim_method = SIM_DICT[similarity_type]
-    return(sim_method(query, data))
+    return(sim_method(query, data,stride_length))

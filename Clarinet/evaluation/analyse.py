@@ -1,13 +1,14 @@
 import json
 import numpy as np
 import os
+import pandas as pd
 
 bad_queries = ['MIDI-Unprocessed_Schubert7-9_MID--AUDIO_11_R2_2018_wav_melody.mid',
                'ORIG-MIDI_03_7_10_13_Group_MID--AUDIO_18_R3_2013_wav--3_melody.mid'
                ]
 
 
-def getRecall(posn):
+def getRecall(data,posn):
     score = 0
     for key, value in data.items():
         target = key.replace("_query", "")
@@ -18,7 +19,7 @@ def getRecall(posn):
     return score/len(data)
 
 
-def getMeanRank():
+def getMeanRank(data):
     average_rank = 0
     for key, value in data.items():
         target = key.replace("_query", "")
@@ -29,7 +30,7 @@ def getMeanRank():
     return average_rank
 
 
-def getNormSim():
+def getNormSim(data):
     average_score = 0
     for key, value in data.items():
         target = key.replace("_query", "")
@@ -41,7 +42,7 @@ def getNormSim():
     return average_score
 
 
-def getMargin(consider_only_top=False):
+def getMargin(data,consider_only_top=False):
     average_score = 0
     total_len = len(data)
     for key, value in data.items():
@@ -64,7 +65,7 @@ def getMargin(consider_only_top=False):
     return average_score
 
 
-def getAvgConfidence():
+def getAvgConfidence(data):
     average_score = 0
     for key, value in data.items():
         target = key.replace("_query", "")
@@ -75,7 +76,7 @@ def getAvgConfidence():
     return average_score
 
 
-def getMRR():
+def getMRR(data):
     average = 0
     for key, value in data.items():
         target = key.replace("_query", "")
@@ -86,35 +87,37 @@ def getMRR():
     return average
 
 
-if __name__ == '__main__':
-    results = {}
-    files = os.listdir(os.getcwd())
-    for f in files:
-        if f.endswith('.json'):
-            with open(f) as json_file:
-                data = json.load(json_file)
-            for q in bad_queries:
-                del data[q]
-            recall1 = getRecall(1)
-            recall3 = getRecall(3)
-            recall5 = getRecall(5)
-            recall10 = getRecall(10)
-            mean_rank = getMeanRank()
-            norm_sim = getNormSim()
-            margin = getMargin()
-            avg_confidence = getAvgConfidence()
-            mrr = getMRR()
-            results[f] = {
-                'recall1': recall1,
-                'recall3': recall3,
-                'recall5': recall5,
-                'recall10': recall10,
-                'mean_rank': mean_rank,
-                'norm_sim': norm_sim,
-                'margin': margin,
-                'avg_confidence': avg_confidence,
-                'mrr': mrr
-            }
 
-    with open('results.json', 'w') as outfile:
-        json.dump(results, outfile)
+def analyse(file):
+    with open(file) as json_file:
+        data = json.load(json_file)
+    for q in bad_queries:
+        del data[q]
+    recall1 = getRecall(data,1)
+    recall3 = getRecall(data,3)
+    recall5 = getRecall(data,5)
+    recall10 = getRecall(data,10)
+    mean_rank = getMeanRank(data)
+    norm_sim = getNormSim(data)
+    margin = getMargin(data)
+    avg_confidence = getAvgConfidence(data)
+    mrr = getMRR(data)
+
+
+    results= {
+        'Recall@1': recall1,
+        'Recall@3': recall3,
+        'Recall@5': recall5,
+        'Recall@10': recall10,
+        'Mean Rank': mean_rank,
+        'Normalised Similarity': norm_sim,
+        'Margin of Error': margin,
+        'Average Confidence': avg_confidence,
+        'MRR': mrr
+    }
+
+    df=pd.DataFrame(results.items(), columns=["Metric","Value"])
+
+    
+    return(df)
+
