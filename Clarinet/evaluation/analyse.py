@@ -4,8 +4,7 @@ import numpy as np
 import os
 import pandas as pd
 
-bad_queries = [
-               ]
+bad_queries = []
 
 
 def getRecall(data,posn):
