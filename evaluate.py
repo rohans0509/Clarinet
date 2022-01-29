@@ -8,11 +8,6 @@ import json
 from tqdm import tqdm
 import miditoolkit
 
-
-query_dir="Data/Queries"
-collection_dir="Data/Original Collection"
-output_dir="Results"
-
 def computeScores(query_dir,collection_dir,stride_length=0,similarity_type="text",output_dir="Results"):
     print("Reading queries....")
     queries=midiFolderToDict(query_dir) 
@@ -91,5 +86,3 @@ def midiFolderToDict(folder:str)->Dict: # Returns a dict of form {filelocation:t
         if file.endswith(".mid"):
             output_dict[file]=midiFileToText(file)
     return(output_dict)
-
-computeScores(query_dir,collection_dir,stride_length=0,similarity_type="text",output_dir=output_dir)
