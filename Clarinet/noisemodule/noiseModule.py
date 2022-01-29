@@ -161,6 +161,7 @@ class NoiseModule:
         :param folder: folder to dump to
         """
         self.addNoiseToFull()
+        fname = fname.split('/')[-1]
         path = os.path.join(folder,fname.replace(".mid","_noise.mid"))
         self.mido_obj.dump(path)
 

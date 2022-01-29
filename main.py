@@ -1,9 +1,10 @@
-from Clarinet.converter.midi2audio import midi2audio
-from Clarinet.converter.audio2midi import audio2midi
-from  Clarinet.visualiser import visualise
-from Clarinet.melodyextraction import extractMelody
-from Clarinet.preprocessing import preprocess
-from Clarinet.utils import extractMelodyFolder,extractNotes,preprocessFolder
+# from Clarinet.converter.midi2audio import midi2audio
+# from Clarinet.converter.audio2midi import audio2midi
+# from  Clarinet.visualiser import visualise
+# from Clarinet.melodyextraction import extractMelody
+# from Clarinet.preprocessing import preprocess
+# from Clarinet.utils import extractMelodyFolder,extractNotes,preprocessFolder
+from generateData import generateNoisy
 
 filename = "Data/Audio/Birthday/happy_birthday.wav"
 mode = "music-piano-v2"
@@ -26,10 +27,12 @@ mode = "music-piano-v2"
 # extractNotes(processed_folder)
 
 
-processed_folder=preprocessFolder("Data/Midi/2018_clipped")
-melody_folder=extractMelodyFolder("Data/Midi/2018_clipped_processed")
+# processed_folder=preprocessFolder("Data/Midi/2018_clipped")
+# melody_folder=extractMelodyFolder("Data/Midi/2018_clipped_processed")
 
-processed_folder=preprocessFolder("Data/Midi/2018_queries")
-melody_folder=extractMelodyFolder("Data/Midi/2018_queries_processed")
+# processed_folder=preprocessFolder("Data/Midi/2018_queries")
+# melody_folder=extractMelodyFolder("Data/Midi/2018_queries_processed")
 
+
+generateNoisy("Data/Original Collection","Data/Noisy Collection")
 
