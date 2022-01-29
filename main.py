@@ -5,7 +5,7 @@
 # from Clarinet.preprocessing import preprocess
 # from Clarinet.utils import extractMelodyFolder,extractNotes,preprocessFolder
 from generateData import generateNoisy
-from generateQueries import genQuery, genQueryFromFolder
+from generateQueries import genQuery, genQueryFromFolder, getAvgLen
 import miditoolkit
 import os
 import shutil
@@ -57,7 +57,7 @@ def copy_midi_files(folder1,folder2):
 #     copy_midi_files(f"Data/Original Collection/POP909/{folder}","Data/Original Collection")
 
 
-generateNoisy("Data/Original Collection","Data/Noisy Collection")
+#generateNoisy("Data/Original Collection","Data/Noisy Collection")
 
 # loop through all mid files in folder 1
 # for file in tqdm(os.listdir("Data/Original Collection")):
@@ -72,5 +72,5 @@ generateNoisy("Data/Original Collection","Data/Noisy Collection")
 #         mido_obj.instruments[0].notes.sort(key=lambda x: x.end)
 #         mido_obj.dump(f"Data/Original Collection/{file}")
 
-#genQueryFromFolder("Data/Original Collection","Data/Queries")
-
+genQueryFromFolder("Data/Original Collection","Data/Original Queries")
+genQueryFromFolder("Data/Noisy Collection","Data/Noisy Queries")
