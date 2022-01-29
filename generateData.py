@@ -37,3 +37,4 @@ def generateNoisy(data_dir,out_dir):
         mido_obj = miditoolkit.midi.parser.MidiFile(file)
         noise = NoiseModule(mido_obj)
         noise.dumpNoiseMIDI(file,out_dir)
+
