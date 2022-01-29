@@ -1,18 +1,29 @@
 import json
 from pickle import TRUE
+from cv2 import sort
 import numpy as np
 import os
 import pandas as pd
 
+from Clarinet.search import similarity
+
 bad_queries = []
 
-
+{
+"0":
+    {"0":1,
+    "1":0.5},
+"1":
+    {"0":0,
+        "1":1}  
+        }
 def getRecall(data,posn):
     score = 0
     for key, value in data.items():
-        target = key.replace("_query", "")
-        items = [filename for filename in value.keys()]
-        rank = items.index(target)+1
+        target = key
+        sorted_value = {k: v for k, v in sorted(value.items(), key=lambda item: item[1])}
+        ranking=list(sorted_value.keys())
+        rank = ranking.index(target)+1
         if rank <= posn:
             score += 1
     return score/len(data)
@@ -21,9 +32,10 @@ def getRecall(data,posn):
 def getMeanRank(data):
     average_rank = 0
     for key, value in data.items():
-        target = key.replace("_query", "")
-        items = [filename for filename in value.keys()]
-        rank = items.index(target)+1
+        target = key
+        sorted_value = {k: v for k, v in sorted(value.items(), key=lambda item: item[1])}
+        ranking=list(sorted_value.keys())
+        rank = ranking.index(target)+1
         average_rank += rank
     average_rank /= len(data)
     return average_rank
@@ -32,9 +44,11 @@ def getMeanRank(data):
 def getNormSim(data):
     average_score = 0
     for key, value in data.items():
-        target = key.replace("_query", "")
-        items = [filename for filename in value.keys()]
-        topsim = value[items[0]]
+        target = key
+        sorted_value = {k: v for k, v in sorted(value.items(), key=lambda item: item[1])}
+        ranking=list(sorted_value.keys())
+        topranked=ranking[0]
+        topsim = sorted_value[topranked]
         sim = value[target]
         average_score += sim/topsim
     average_score /= len(data)
@@ -92,10 +106,6 @@ def analyse(file):
         data = json.load(json_file)
     for q in bad_queries:
         del data[q]
-    sorted_data={}
-    for key,value in data:
-        sorted_value={k: v for k, v in sorted(value.items(), key=lambda item: item[1])}
-        sorted_data[key]=sorted_value
     recall1 = getRecall(data,1)
     recall3 = getRecall(data,3)
     recall5 = getRecall(data,5)
