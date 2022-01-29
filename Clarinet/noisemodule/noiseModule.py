@@ -62,25 +62,33 @@ class NoiseModule:
             for i in range(1,len(self.mido_obj.instruments[channel].notes)):
                 if random.random() < contamination:
                     try:
+                        prev_start = self.mido_obj.instruments[channel].notes[i-1].start
                         prev_end = self.mido_obj.instruments[channel].notes[i-1].end
                         cur_start = self.mido_obj.instruments[channel].notes[i].start
                         cur_end = self.mido_obj.instruments[channel].notes[i].end
-                        length = int((cur_start-prev_end)*thresh)
-                        startnoise = random.randint(0,length)
-                        endnoise = random.randint(0,length)
-                        starttime = prev_end+startnoise
-                        endtime = cur_start-endnoise
-                        if endtime - starttime > cur_start - cur_end:
-                            continue
-                        prev_pitch = self.mido_obj.instruments[channel].notes[i-1].pitch
-                        cur_pitch = self.mido_obj.instruments[channel].notes[i].pitch
-                        pitch = random.randint(min(prev_pitch,cur_pitch),max(prev_pitch,cur_pitch))
-                        #pitch = min(68,pitch)
-                        prev_vel = self.mido_obj.instruments[channel].notes[i-1].velocity
-                        cur_vel = self.mido_obj.instruments[channel].notes[i].velocity
-                        vel = random.randint(min(prev_vel,cur_vel),max(prev_vel,cur_vel))
-                        #vel = min(120,vel)
-                        extra_notes.append(miditoolkit.Note(vel,pitch,starttime,endtime))
+
+                        prev_len = prev_end - prev_start
+                        cur_len = cur_end - cur_start
+
+                        if cur_start - prev_end > 0:
+                            avg_len = (prev_len + cur_len)/2
+                            del_len = random.randint(-int(avg_len*thresh),int(avg_len*thresh))
+                            new_len = avg_len + del_len
+
+                            if (prev_end + new_len) < cur_start:
+                                length = new_len
+                            else:
+                                length = random.randint(0,cur_start-prev_end)
+
+                            start = prev_end
+                            end = prev_end + length
+                            prev_pitch = self.mido_obj.instruments[channel].notes[i-1].pitch
+                            cur_pitch = self.mido_obj.instruments[channel].notes[i].pitch
+                            pitch = random.randint(min(prev_pitch,cur_pitch),max(prev_pitch,cur_pitch))
+                            prev_vel = self.mido_obj.instruments[channel].notes[i-1].velocity
+                            cur_vel = self.mido_obj.instruments[channel].notes[i].velocity
+                            vel = random.randint(min(prev_vel,cur_vel),max(prev_vel,cur_vel))
+                            extra_notes.append(miditoolkit.Note(vel,pitch,start,end))
                     except:
                         pass
             extra_notes = extra_notes[1:]
@@ -99,19 +107,14 @@ class NoiseModule:
                         endnoise = random.randint(-noiseDisp,noiseDisp)
                         starttime = max(0,cur_start+startnoise)
                         endtime = cur_start+endnoise
-                        # check later
-                        if endtime - starttime > cur_start - cur_end:
-                            continue
                         prev_pitch = self.mido_obj.instruments[channel].notes[i-1].pitch
                         cur_pitch = self.mido_obj.instruments[channel].notes[i].pitch
                         next_pitch = self.mido_obj.instruments[channel].notes[i+1].pitch
                         pitch = random.randint(min(prev_pitch,cur_pitch,next_pitch),max(prev_pitch,cur_pitch,next_pitch))
-                        #pitch = min(68,pitch)
                         prev_vel = self.mido_obj.instruments[channel].notes[i-1].velocity
                         cur_vel = self.mido_obj.instruments[channel].notes[i].velocity
                         next_vel = self.mido_obj.instruments[channel].notes[i+1].velocity
                         vel = random.randint(min(prev_vel,cur_vel,next_vel),max(prev_vel,cur_vel,next_vel))
-                        #vel = min(120,vel)
                         extra_notes.append(miditoolkit.Note(vel,pitch,starttime,endtime))
                     except:
                         pass
@@ -155,18 +158,18 @@ class NoiseModule:
                     prev_end = self.mido_obj.instruments[channel].notes[i-1].end
                     cur_start = self.mido_obj.instruments[channel].notes[i].start
                     cur_end = self.mido_obj.instruments[channel].notes[i].end
-                    length = int((cur_start-prev_end)*thresh)
-                    if (cur_start<prev_end):
-                        print(self.origName)
-                        continue
-                    startnoise = random.randint(-length,length)
-                    endnoise = random.randint(-length,length)
-                    newstart = max(prev_end+startnoise,prev_start)
-                    newend = min(cur_start+endnoise,cur_end)
-                    if (newend-newstart) > (cur_end - cur_end):
-                        continue
-                    self.mido_obj.instruments[channel].notes[i].start = newstart
-                    self.mido_obj.instruments[channel].notes[i].end = newend
+
+                    prev_len = prev_end-prev_start
+                    cur_len = cur_end-cur_start
+
+                    end_noise = random.randint(0,prev_len * thresh)
+                    start_noise = random.randint(0,cur_len * thresh)
+
+                    prev_end_new = prev_end - end_noise
+                    cur_start_new = cur_start + start_noise
+
+                    self.mido_obj.instruments[channel].notes[i-1].end = prev_end_new
+                    self.mido_obj.instruments[channel].notes[i].start = cur_start_new
 
     def dumpNoiseMIDI(self,fname,folder):
         """
