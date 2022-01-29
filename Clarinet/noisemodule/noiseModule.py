@@ -1,6 +1,7 @@
 import miditoolkit
 import numpy as np
 import random
+import os
 
 class NoiseModule:
     def __init__(self, mido_obj,melody_channel=0):
@@ -153,12 +154,15 @@ class NoiseModule:
                     self.mido_obj.instruments[channel].notes[i].start = max(prev_end+startnoise,prev_start)
                     self.mido_obj.instruments[channel].notes[i].end = min(cur_start+endnoise,cur_end)
 
-    def dumpNoiseMIDI(self,fname):
+    def dumpNoiseMIDI(self,fname,folder):
         """
         Dump the MIDI object with noise to a file
         :param fname: file name to dump to
+        :param folder: folder to dump to
         """
-        self.mido_obj.dump(fname)
+        self.addNoiseToFull()
+        path = os.path.join(folder,fname.replace(".mid","_noise.mid"))
+        self.mido_obj.dump(path)
 
 
 
@@ -170,3 +174,12 @@ if __name__ == "__main__":
     output = noise.mido_obj
     output_fname = fname.replace(".mid","_noise.mid")
     output.dump(output_fname)
+
+
+    """
+    folder = ""
+    for fname in allfiles:
+        mido_obj = miditoolkit.midi.parser.MidiFile(fname)
+        noise = NoiseModule(mido_obj)
+        noise.dumpNoiseMIDI(fname,folder)
+    """
