@@ -20,11 +20,16 @@ class NoiseModule:
         self.origName = origName
         self.melody_channel = melody_channel
 
-    def addNoiseToMelody(self):
+    def addNoiseToMelody(self,pitch_contamination,extra_contamination,delete_contamination):
         # TODO : decide what all noise to add
+        self.addVelocityNoise(self.melody_channel,0.2)
+        self.addLengthNoise(self.melody_channel,0.2)
+        self.addPitchNoise(self.melody_channel,pitch_contamination)
+        self.addExtraNotes(self.melody_channel,extra_contamination)
+        self.deleteNotesNoise(self.melody_channel,delete_contamination)
         pass
 
-    def addNoiseToFull(self):
+    def addNoiseToFull(self,pitch_contamination,extra_contamination,delete_contamination):
         # TODO : decide what all noise to add
         self.addVelocityNoise(0,0.2)
         self.addLengthNoise(0,0.2)
@@ -189,13 +194,13 @@ class NoiseModule:
                     self.mido_obj.instruments[channel].notes[i-1].end = max(0,prev_end_new)
                     self.mido_obj.instruments[channel].notes[i].start = max(0,cur_start_new)
 
-    def dumpNoiseMIDI(self,fname,folder):
+    def dumpNoiseMIDI(self,fname,folder,pitch_contamination,extra_contamination,delete_contamination):
         """
         Dump the MIDI object with noise to a file
         :param fname: file name to dump to
         :param folder: folder to dump to
         """
-        self.addNoiseToFull()
+        self.addNoiseToMelody(pitch_contamination,extra_contamination,delete_contamination)
         fname = fname.split('/')[-1]
         path = os.path.join(folder,fname.replace(".mid","_noise.mid"))
         self.mido_obj.dump(path)

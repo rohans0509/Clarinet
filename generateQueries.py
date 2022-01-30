@@ -33,7 +33,9 @@ def genQuery(fname):
 
 
 def genQueryFromFolder(input,output):
-    for fname in tqdm(os.listdir(input)):
+    # get random 50 files from input folder
+    files = random.sample(os.listdir(input),31)
+    for fname in tqdm(files):
         # check if fname ends with .mid
         if fname.endswith(".mid"):                
             flag, mido_obj = genQuery(os.path.join(input,fname))

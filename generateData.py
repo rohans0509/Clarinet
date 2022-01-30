@@ -30,12 +30,12 @@ def generateData(data_dir,mode="doc"):
     extractNotes(melody_folder)
 
 
-def generateNoisy(data_dir,out_dir):
+def generateNoisy(data_dir,out_dir,pitch_contamination,extra_contamination,delete_contamination):
     filenames=os.listdir(data_dir)
     filelocations=[f"{data_dir}/{filename}" for filename in filenames]
     midi_filelocations=[filelocation for filelocation in filelocations if filelocation.endswith(".mid")]
     for file in tqdm(midi_filelocations):
         mido_obj = miditoolkit.midi.parser.MidiFile(file)
         noise = NoiseModule(file,mido_obj)
-        noise.dumpNoiseMIDI(file,out_dir)
+        noise.dumpNoiseMIDI(file,out_dir,pitch_contamination,extra_contamination,delete_contamination)
 
