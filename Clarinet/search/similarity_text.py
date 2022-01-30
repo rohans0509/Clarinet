@@ -21,7 +21,7 @@ def similarity(query:str,data:str,stride_length=0):
     data_len=len(data)
 
     if stride_length not in range(1,query_len+1):
-        stride_length=query_len
+        stride_length=1
 
     s1=query
 
@@ -31,7 +31,7 @@ def similarity(query:str,data:str,stride_length=0):
     end=-1
 
     while end<data_len:
-        start=start+1
+        start=start+stride_length
         end=min(start+query_len,data_len)
 
         s2=data[start:end]
