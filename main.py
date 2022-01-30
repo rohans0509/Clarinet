@@ -76,10 +76,13 @@ def copy_midi_files(folder1,folder2):
 # genQueryFromFolder("Data/Noisy Collection","Data/Noisy Queries")
 
 
+
+# genQueryFromFolder("Data/Original Collection","Data/Original Queries")
+
 # pitch_extra_delete nomenclature
-for p in [0,0.05,0.1,0.2,0.3,0.4,0.5]:
-    for e in [0,0.05,0.1,0.2,0.3]:
-        for d in [0,0.05,0.1,0.15,0.2]:
+for p in [0,0.05,0.1,0.2,0.3,0.4,0.5,0.8]:
+    for e in [0,0.05,0.1,0.2,0.3,0.5]:
+        for d in [0,0.05,0.1,0.15,0.2,0.5]:
             out_dir = f"Data/Noisy Queries/{p}_{e}_{d}"
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir)
