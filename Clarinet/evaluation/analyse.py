@@ -41,7 +41,7 @@ def getNormSim(data):
     return average_score
 
 
-def getMargin(data,consider_only_top=TRUE):
+def getMargin(data,consider_only_top=False):
     average_score = 0
     total_len = len(data)
     for key, value in data.items():

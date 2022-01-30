@@ -8,7 +8,7 @@ import json
 from tqdm import tqdm
 import miditoolkit
 
-def computeScores(query_dir,collection_dir,num_queries=10,num_collection=15,stride_length=0,similarity_type="text",output_dir="Results"):
+def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results"):
     print("Reading queries....")
     queries=midiFolderToDict(query_dir,num_queries) 
     query_filenames=list(queries.keys())
@@ -25,7 +25,7 @@ def computeScores(query_dir,collection_dir,num_queries=10,num_collection=15,stri
 
         query_scores={} # Dict of form {collection_num : sim}
 
-        for j in range(len(collection_filenames)):
+        for j in tqdm(range(len(collection_filenames))):
             collection_filename=collection_filenames[j]
             collection_text=collection[collection_filename]
 
@@ -82,7 +82,13 @@ def midiFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {
     file_locations=sort([f"{folder}/{filename}" for filename in listdir(folder)])
     
     output_dict={}
-    for file in tqdm(file_locations[:num_files]):
-        if file.endswith(".mid"):
-            output_dict[file]=midiFileToText(file)
-    return(output_dict)
+    if num_files==-1:
+        for file in tqdm(file_locations):
+            if file.endswith(".mid"):
+                output_dict[file]=midiFileToText(file)
+        return(output_dict)
+    else:
+        for file in tqdm(file_locations[:num_files]):
+            if file.endswith(".mid"):
+                output_dict[file]=midiFileToText(file)
+        return(output_dict)
