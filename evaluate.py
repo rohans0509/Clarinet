@@ -82,7 +82,7 @@ def midiFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {
     file_locations=sort([f"{folder}/{filename}" for filename in listdir(folder)])
     
     output_dict={}
-    for file in tqdm(file_locations[0:num_files]):
+    for file in tqdm(file_locations[:num_files]):
         if file.endswith(".mid"):
             output_dict[file]=midiFileToText(file)
     return(output_dict)
