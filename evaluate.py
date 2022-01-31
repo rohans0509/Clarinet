@@ -47,8 +47,15 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
         json.dump(collectionmap, fp)
 
     # Evaluation Complete, now generate Analysis
-    df=analyse(f"{output_dir}")
+    out=list(analyse(f"{output_dir}"))
+    print(out)
+
+    best_scores="\n".join(out[0])
+    df=out[1]
     df.to_csv(f"{output_dir}/analysis.csv")
+
+    with open(f"{output_dir}/bestscores.txt","w") as f:
+        f.write(best_scores)
 
 def midiFileToText(filename,channel=0): # Takes input midi filename, outputs text representation of it
     mid_in = miditoolkit.midi.parser.MidiFile(filename)

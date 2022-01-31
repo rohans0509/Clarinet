@@ -112,8 +112,9 @@ def analyse(output_dir):
     
     data=sorted_scores
 
+    best_vals=[]
     for key,value in data.items():
-        print(key,list(value.values())[0],list(value.values())[1])
+        best_vals.append(" ".join([key,list(value.keys())[0],str(list(value.values())[0]),list(value.keys())[1],str(list(value.values())[1])]))
 
 
 
@@ -146,4 +147,4 @@ def analyse(output_dir):
     df.index.names = ['Index']
 
     
-    return(df)
+    return(best_vals,df)
