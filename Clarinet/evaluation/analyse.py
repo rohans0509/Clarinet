@@ -87,16 +87,36 @@ def getMRR(data):
 
 
 
-def analyse(file):
-    with open(file) as json_file:
-        data = json.load(json_file)
+def analyse(output_dir):
+    scores_location=f"{output_dir}/scores.json"
+    collectionmap_location=f"{output_dir}/collectionmap.json"
+    querymap_location=f"{output_dir}/querymap.json"
+
+    with open(scores_location) as json_file:
+        scores = json.load(json_file)
+
+    with open(collectionmap_location) as json_file:
+        collection = json.load(json_file)
+
+    with open(querymap_location) as json_file:
+        queries = json.load(json_file)
+
     for q in bad_queries:
-        del data[q]
-    sorted_data={}
+        del scores[q]
+
+    sorted_scores={}
+
+    for key,value in scores.items():
+        sorted_value={collection[k].split("/")[-1]: v for k, v in sorted(value.items(), key=lambda item: item[1],reverse=True)}
+        sorted_scores[queries[key].split("/")[-1].replace("_noise", "").replace("_query", "")]=sorted_value
+    
+    data=sorted_scores
+
     for key,value in data.items():
-        sorted_value={k: v for k, v in sorted(value.items(), key=lambda item: item[1],reverse=True)}
-        sorted_data[key]=sorted_value
-    data = sorted_data
+        print(key,list(value.values())[0],list(value.values())[1])
+
+
+
     recall1 = getRecall(data,1)
     recall3 = getRecall(data,3)
     recall5 = getRecall(data,5)
@@ -115,7 +135,7 @@ def analyse(file):
         'Recall@10': recall10,
         'Mean Rank': mean_rank,
         'Normalised Similarity': norm_sim,
-        'Margin of Error': margin,
+        'Margin of Discrimination': margin,
         'Average Confidence': avg_confidence,
         'MRR': mrr
     }

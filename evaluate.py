@@ -47,7 +47,7 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
         json.dump(collectionmap, fp)
 
     # Evaluation Complete, now generate Analysis
-    df=analyse(f"{output_dir}/scores.json")
+    df=analyse(f"{output_dir}")
     df.to_csv(f"{output_dir}/analysis.csv")
 
 def midiFileToText(filename,channel=0): # Takes input midi filename, outputs text representation of it
@@ -92,3 +92,8 @@ def midiFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {
             if file.endswith(".mid"):
                 output_dict[file]=midiFileToText(file)
         return(output_dict)
+
+# def midiFolderToTextFolder(folder:str,num_files:int):
+#     folder_name=folder.split("/")[-1]
+#     dict=midiFolderToDict(folder)
+#     for filename
