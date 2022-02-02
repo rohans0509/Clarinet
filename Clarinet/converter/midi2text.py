@@ -1,5 +1,5 @@
 import miditoolkit
-def midi2text(filename,channel=0): # Takes input midi filename, outputs text representation of it
+def midi2text(filename,channel=0,num_notes=-1): # Takes input midi filename, outputs text representation of it
     mid_in = miditoolkit.midi.parser.MidiFile(filename)
     notes = mid_in.instruments[channel].notes
     notes = sorted(notes, key=lambda x: x.start)
@@ -22,7 +22,7 @@ def midi2text(filename,channel=0): # Takes input midi filename, outputs text rep
     }
 
     out=[]
-    for pitch in rep:
+    for pitch in rep[:num_notes]:
         num = pitch % 12
         out.append(pitch_map[num + 12])
     return "".join(out)

@@ -11,24 +11,24 @@ from tqdm import tqdm
 import miditoolkit
 
 
-def midiFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {filelocation:text_representation}
+def midiFolderToDict(folder:str,num_files:int,num_notes=-1,channel=0)->Dict: # Returns a dict of form {filelocation:text_representation}
     file_locations=sort([f"{folder}/{filename}" for filename in listdir(folder)])
     
     output_dict={}
     if num_files==-1:
         for file in tqdm(file_locations):
             if file.endswith(".mid"):
-                output_dict[file]=midi2text(file)
+                output_dict[file]=midi2text(file,channel=channel,num_notes=num_notes)
         return(output_dict)
     else:
         for file in tqdm(file_locations[:num_files]):
             if file.endswith(".mid"):
-                output_dict[file]=midi2text(file)
+                output_dict[file]=midi2text(file,channel=channel,num_notes=num_notes)
         return(output_dict)
 
 
-def generateText(folder,num_files=-1,output_folder="Text"):
-    out_dict=midiFolderToDict(folder,num_files)
+def generateText(folder,num_files=-1,output_folder="Text",num_notes=-1,channel=0):
+    out_dict=midiFolderToDict(folder,num_files,num_notes=num_notes,channel=channel)
     for file,text in out_dict.items():
         foldername=f"{output_folder}/{file.split('/')[-2]}"
         if not path.exists(foldername):
@@ -37,7 +37,12 @@ def generateText(folder,num_files=-1,output_folder="Text"):
         with open(f"{foldername}/{filename}","w") as f:
             f.write(text)
 
-for folder in tqdm(os.listdir("Data/Noisy Queries")):
-    folder_location=f"Data/Noisy Queries/{folder}"
-    generateText(folder_location,output_folder="Text/Noisy Queries",num_files=-1)
-    # print(folder_location)
+
+midi_folder="Data/Noisy Queries"
+num_files=-1
+num_notes=-1
+channel=0
+
+for folder in tqdm(os.listdir(midi_folder)):
+    folder_location=f"{midi_folder}/{folder}"
+    generateText(folder_location,output_folder="Text/Noisy Queries",num_files=num_files,num_files=num_files,channel=channel)
