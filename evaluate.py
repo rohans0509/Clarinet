@@ -9,23 +9,23 @@ from tqdm import tqdm
 import miditoolkit
 
 def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results"):
-    print("Reading queries....")
-    queries=midiFolderToDict(query_dir,num_queries) 
+    # print("Reading queries....")
+    queries=textFolderToDict(query_dir,num_queries) 
     query_filenames=list(queries.keys())
 
-    print("Reading collection....")
-    collection=midiFolderToDict(collection_dir,num_collection)
+    # print("Reading collection....")
+    collection=textFolderToDict(collection_dir,num_collection)
     collection_filenames=list(collection.keys())
 
     scores={} # Dict of form {query_num : {collection_num : sim}}
-    print("Computing Similarities..")
-    for i in tqdm(range(len(query_filenames))):
+    # print("Computing Similarities..")
+    for i in range(len(query_filenames)):
         query_filename=query_filenames[i]
         query_text=queries[query_filename]
 
         query_scores={} # Dict of form {collection_num : sim}
 
-        for j in tqdm(range(len(collection_filenames))):
+        for j in range(len(collection_filenames)):
             collection_filename=collection_filenames[j]
             collection_text=collection[collection_filename]
 
@@ -48,7 +48,6 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
 
     # Evaluation Complete, now generate Analysis
     out=list(analyse(f"{output_dir}"))
-    print(out)
 
     best_scores="\n".join(out[0])
     df=out[1]
@@ -57,47 +56,21 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
     with open(f"{output_dir}/bestscores.txt","w") as f:
         f.write(best_scores)
 
-def midiFileToText(filename,channel=0): # Takes input midi filename, outputs text representation of it
-    mid_in = miditoolkit.midi.parser.MidiFile(filename)
-    notes = mid_in.instruments[channel].notes
-    notes = sorted(notes, key=lambda x: x.start)
-    rep=[note.pitch for note in notes]
-
-
-    pitch_map = {
-    12: "C",
-    13: "C#",
-    14: "D",
-    15: "D#",
-    16: "E",
-    17: "F",
-    18: "F#",
-    19: "G",
-    20: "G#",
-    21: "A",
-    22: "A#",
-    23: "B"
-    }
-
-    out=[]
-    for pitch in rep:
-        num = pitch % 12
-        out.append(pitch_map[num + 12])
-    return "".join(out)
-
-def midiFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {filelocation:text_representation}
+def textFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {filelocation:text_representation}
     file_locations=sort([f"{folder}/{filename}" for filename in listdir(folder)])
     
     output_dict={}
     if num_files==-1:
-        for file in tqdm(file_locations):
-            if file.endswith(".mid"):
-                output_dict[file]=midiFileToText(file)
+        for file in file_locations:
+            if file.endswith(".txt"):
+                with open(file,"r") as f:
+                    output_dict[file]=f.readlines()[0]
         return(output_dict)
     else:
-        for file in tqdm(file_locations[:num_files]):
-            if file.endswith(".mid"):
-                output_dict[file]=midiFileToText(file)
+        for file in file_locations[:num_files]:
+            if file.endswith(".txt"):
+                with open(file,"r") as f:
+                    output_dict[file]=f.readlines()[0]
         return(output_dict)
 
 # def midiFolderToTextFolder(folder:str,num_files:int):

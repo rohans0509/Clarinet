@@ -1,0 +1,10 @@
+Index,Metric,Value
+1,Recall@1,0.0
+2,Recall@3,0.0
+3,Recall@5,0.0
+4,Recall@10,0.0
+5,Mean Rank,211.5
+6,Normalised Similarity,0.7681818181818181
+7,Margin of Discrimination,0.0
+8,Average Confidence,0.47453310696095075
+9,MRR,0.03693677960181627
