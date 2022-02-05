@@ -40,9 +40,9 @@ def generateText(folder,num_files=-1,output_folder="Text",num_notes=-1,channel=0
 
 midi_folder="Data/Noisy Queries"
 num_files=-1
-num_notes=-1
+num_notes=8
 channel=0
 
 for folder in tqdm(os.listdir(midi_folder)):
     folder_location=f"{midi_folder}/{folder}"
-    generateText(folder_location,output_folder="Text/Noisy Queries",num_files=num_files,num_files=num_files,channel=channel)
+    generateText(folder_location,output_folder="Text/Noisy Queries",num_files=num_files,num_notes=num_notes,channel=channel)
