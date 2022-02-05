@@ -1,25 +1,28 @@
 import subprocess
 from Clarinet.utils.fast import fast
+from tqdm import tqdm
+
+num_processes=2 # CPUs/4 (Check Clarinet.evaluation.evaluate.py)
+
+query_folders=["Data/Original Queries","Data/Expected Noise Queries"]
+collection_dir="Text/Original Collection" # Always in TEXT form
+query_length_range=range(5,14)
+stride_length_range=range(1,2) # Stride Length=1
+query_num=-1
+
+
+# disable_tqdm=False
+
 
 def run_fasteval(query_dir,collection_dir,query_length,stride_length,output_dir="",query_num="-1"):
     subprocess.run(["python","fasteval.py","-q",query_dir,"-l",str(query_length),"-c",collection_dir,"-s",str(stride_length),"-o",output_dir,"-n",str(query_num)])
 
+for query_length in tqdm(query_length_range):
+    for stride_length in(stride_length_range):
+        inputs=[]
 
-query_folders=["Data/Original Queries"]
-collection_dir="Text/Original Collection" # Collection dir is always in text form
-query_length=5
-stride_length=15
-num_processes=1
-query_num=2
-output_dir=""
+        for query_dir in query_folders:
+            output_dir=f"Results/{query_dir.split('Data/')[1]}/{query_length}/{stride_length}"
+            inputs.append((query_dir,collection_dir,query_length,stride_length,output_dir,query_num))
 
-# disable_tqdm=False
-
-inputs=[]
-
-for query_dir in query_folders:
-    inputs.append((query_dir,collection_dir,query_length,stride_length,output_dir,query_num))
-
-fast(run_fasteval,inputs,num_processes=num_processes)
-
-
+        fast(run_fasteval,inputs,num_processes=num_processes)
