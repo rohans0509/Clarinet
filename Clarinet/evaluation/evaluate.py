@@ -8,7 +8,7 @@ import json
 from tqdm import tqdm
 import miditoolkit
 
-def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results"):
+def evaluate(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results",disable=False):
     # print("Reading queries....")
     queries=textFolderToDict(query_dir,num_queries) 
     query_filenames=list(queries.keys())
@@ -19,13 +19,14 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
 
     scores={} # Dict of form {query_num : {collection_num : sim}}
     # print("Computing Similarities..")
-    for i in range(len(query_filenames)):
+
+    for i in tqdm(range(len(query_filenames)),disable=disable):
         query_filename=query_filenames[i]
         query_text=queries[query_filename]
 
         query_scores={} # Dict of form {collection_num : sim}
 
-        for j in tqdm(range(len(collection_filenames))):
+        for j in range(len(collection_filenames)):
             collection_filename=collection_filenames[j]
             collection_text=collection[collection_filename]
 
@@ -58,7 +59,6 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
 
 def textFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {filelocation:text_representation}
     file_locations=sort([f"{folder}/{filename}" for filename in listdir(folder)])
-    
     output_dict={}
     if num_files==-1:
         for file in file_locations:

@@ -1,93 +1,23 @@
-# from Clarinet.converter.midi2audio import midi2audio
-# from Clarinet.converter.audio2midi import audio2midi
-# from  Clarinet.visualiser import visualise
-# from Clarinet.melodyextraction import extractMelody
-# from Clarinet.preprocessing import preprocess
-# from Clarinet.utils import extractMelodyFolder,extractNotes,preprocessFolder
-from generateData import generateNoisy
-from generateQueries import genQuery, genQueryFromFolder, getAvgLen
-import miditoolkit
-import os
-import shutil
-from tqdm import tqdm
-filename = "Data/Audio/Birthday/happy_birthday.wav"
-mode = "music-piano-v2"
+import subprocess
+from Clarinet.utils.fast import fast
+
+def run_fasteval(query_dir,collection_dir,query_length,stride_length):
+    subprocess.run(["python","fasteval.py","-q",query_dir,"-l",str(query_length),"-c",collection_dir,"-s",str(stride_length)])
 
 
-# Convert File to Midi
+query_folders=["Data/Expected Noise Queries"]
+collection_dir="Text/Original Collection" # Collection dir is always in text form
+query_length=10
+stride_length=1
+num_processes=4
+# output_dir="Results/Expected Noise Queries"
+# disable_tqdm=False
 
-# midi_filename=audio2midi(file=filename, mode=mode)
+inputs=[]
 
-# midi_filename="Data/Midi/Birthday/happy_birthday.mid"
+for query_dir in query_folders:
+    inputs.append((query_dir,collection_dir,query_length,stride_length))
 
-# Preprocess Midi File
-# processed_filename=preprocess(midi_filename)
+fast(run_fasteval,inputs,num_processes=num_processes)
 
-# Extract Melody from Midi and Save to Midi
-
-# melody_midi_filename=extractMelody(processed_filename)
-
-
-# extractNotes(processed_folder)
-
-
-# processed_folder=preprocessFolder("Data/Midi/2018_clipped")
-# melody_folder=extractMelodyFolder("Data/Midi/2018_clipped_processed")
-
-# processed_folder=preprocessFolder("Data/Midi/2018_queries")
-# melody_folder=extractMelodyFolder("Data/Midi/2018_queries_processed")
-
-
-#generateNoisy("Data/Original Collection","Data/Noisy Collection")
-
-# function to copy all .mid files from all subdirectories in folder 1 to folder 2
-def copy_midi_files(folder1,folder2):
-    # check if folder1 is a directory
-    if not os.path.isdir(folder1):
-        return
-    filenames=os.listdir(folder1)
-    filelocations=[f"{folder1}/{filename}" for filename in filenames]
-    midi_filelocations=[filelocation for filelocation in filelocations if filelocation.endswith(".mid")]
-    for file in midi_filelocations:
-        shutil.copy(file,folder2)
-
-
-# # loop through all folders in folder 1
-# for folder in os.listdir("Data/Original Collection/POP909"):
-#     copy_midi_files(f"Data/Original Collection/POP909/{folder}","Data/Original Collection")
-
-
-#generateNoisy("Data/Original Collection","Data/Noisy Collection")
-
-# loop through all mid files in folder 1
-# for file in tqdm(os.listdir("Data/Original Collection")):
-#     if file.endswith(".mid"):
-#         mido_obj = miditoolkit.midi.parser.MidiFile(f"Data/Original Collection/{file}")
-#         mido_obj.instruments[0].notes.sort(key=lambda x: x.start)
-#         for i in range(1,len(mido_obj.instruments[0].notes)):
-#             prev_end = mido_obj.instruments[0].notes[i-1].end
-#             curr_start = mido_obj.instruments[0].notes[i].start
-#             if prev_end>curr_start:
-#                 mido_obj.instruments[0].notes[i-1].end = curr_start
-#         mido_obj.instruments[0].notes.sort(key=lambda x: x.end)
-#         mido_obj.dump(f"Data/Original Collection/{file}")
-
-# genQueryFromFolder("Data/Original Collection","Data/Original Queries")
-# genQueryFromFolder("Data/Noisy Collection","Data/Noisy Queries")
-
-
-
-# genQueryFromFolder("Data/Original Collection","Data/Original Queries")
-
-# pitch_extra_delete nomenclature
-# for p in [0,0.05,0.1,0.2,0.3,0.4,0.5,0.8]:
-#     for e in [0,0.05,0.1,0.2,0.3,0.5]:
-#         for d in [0,0.05,0.1,0.15,0.2,0.5]:
-#             out_dir = f"Data/Noisy Queries/{p}_{e}_{d}"
-#             if not os.path.exists(out_dir):
-#                 os.makedirs(out_dir)
-#             generateNoisy("Data/Original Queries",out_dir,p,e,d)
-
-
-generateNoisy("Data/Original Queries","Data/Expected Noise Queries",0.05,0.1,0.05)
 
