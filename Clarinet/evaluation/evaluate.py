@@ -12,7 +12,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 from Clarinet.utils.fast import fast
 
-num_processes=1
+num_processes=4
 
 def evaluate(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results",disable=False):
     # print("Reading queries....")
