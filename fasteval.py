@@ -32,9 +32,9 @@ query_dir=args.query_dir
 collection_dir=args.collection_dir if args.collection_dir else "Text/Original Collection"
 query_length=args.query_length if args.query_length else 10
 stride_length=args.stride_length if args.stride_length else 1
-output_dir=args.output_dir if args.output_dir else f"Results/{query_dir.split('Data/')[-1]}"
+output_dir=args.output_dir if args.output_dir!="" else f"Results/{query_dir.split('Data/')[-1]}"
 channel=args.channel if args.channel else 0
-query_num=args.query_num if args.query_num else -1
+query_num=int(args.query_num) if args.query_num else -1
 collection_num=args.collection_num if args.collection_num else -1
 disable=args.disable_tqdm if args.disable_tqdm else False
 

@@ -7,7 +7,7 @@ def run_fasteval(query_dir,collection_dir,query_length,stride_length):
 
 query_folders=["Data/Expected Noise Queries"]
 collection_dir="Text/Original Collection" # Collection dir is always in text form
-query_length=10
+query_length=11
 stride_length=1
 num_processes=4
 # output_dir="Results/Expected Noise Queries"

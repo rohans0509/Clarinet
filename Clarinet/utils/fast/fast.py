@@ -18,4 +18,5 @@ def fast(function,inputs,num_processes=4):
 
     print("\n\n\n\n\n-------------------------------")
     print(f"All processes run")
+    
 
