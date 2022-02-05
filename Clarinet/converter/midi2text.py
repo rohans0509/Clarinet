@@ -22,7 +22,7 @@ def midi2text(filename,channel=0,num_notes=-1): # Takes input midi filename, out
     }
 
     out=[]
-    for pitch in rep[:num_notes]:
+    for pitch in rep[:num_notes+1]:
         num = pitch % 12
         out.append(pitch_map[num + 12])
     return "".join(out)

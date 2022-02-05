@@ -1,0 +1,1 @@
+from Clarinet.utils.fast.fast import fast

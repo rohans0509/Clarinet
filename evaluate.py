@@ -25,7 +25,7 @@ def computeScores(query_dir,collection_dir,num_queries=-1,num_collection=-1,stri
 
         query_scores={} # Dict of form {collection_num : sim}
 
-        for j in range(len(collection_filenames)):
+        for j in tqdm(range(len(collection_filenames))):
             collection_filename=collection_filenames[j]
             collection_text=collection[collection_filename]
 
@@ -72,8 +72,3 @@ def textFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {
                 with open(file,"r") as f:
                     output_dict[file]=f.readlines()[0]
         return(output_dict)
-
-# def midiFolderToTextFolder(folder:str,num_files:int):
-#     folder_name=folder.split("/")[-1]
-#     dict=midiFolderToDict(folder)
-#     for filename
