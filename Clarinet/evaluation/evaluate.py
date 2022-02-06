@@ -75,8 +75,11 @@ def textFolderToDict(folder:str,num_files:int)->Dict: # Returns a dict of form {
     else:
         for file in file_locations[:num_files]:
             if file.endswith(".txt"):
-                with open(file,"r") as f:
-                    output_dict[file]=f.readlines()[0]
+                try:
+                    with open(file,"r") as f:
+                        output_dict[file]=f.readlines()[0]
+                except:
+                    print(file)
         return(output_dict)
 
 def queryScores(collection_filenames,collection,query_text,stride_length,similarity_type):

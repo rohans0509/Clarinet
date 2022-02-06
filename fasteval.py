@@ -23,6 +23,9 @@ parser.add_argument('-o','--output_dir', required=False,help="Results Directory 
 parser.add_argument('-s','--stride_length', required=False,type=int,help="Stride Length (default : 1)")
 parser.add_argument('-e','--channel', required=False,type=int,help="Channel (default : 0)")
 
+# add argument dont_convert which is default False, and inclusion means True
+parser.add_argument('-t','--dont_convert', required=False,help="Do not convert Query Folder to Text",action="store_true")
+
 
 
 args = parser.parse_args()
@@ -37,16 +40,19 @@ channel=args.channel if args.channel else 0
 query_num=int(args.query_num) if args.query_num else -1
 collection_num=args.collection_num if args.collection_num else -1
 disable=args.disable_tqdm if args.disable_tqdm else False
+dont_convert=True if args.dont_convert else False
 
 '''
 ==============
 CONVERT QUERIES TO TEXT
 ==============
 '''
+if dont_convert:
+    query_text_folder=query_dir
+else:
+    query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
 
-query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
-
-generateText(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
+    generateText(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
 
 '''
 ==============
