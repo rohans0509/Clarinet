@@ -3,6 +3,7 @@ from typing import Dict
 from numpy import sort
 from Clarinet.search import similarity
 from Clarinet.evaluation import analyse
+from Clarinet.constants import num_processes_evaluate as num_processes
 from os import listdir,path
 import json
 from tqdm import tqdm
@@ -12,7 +13,6 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 from Clarinet.utils.fast import fast
 
-num_processes=4
 
 def evaluate(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results",disable=False):
     # print("Reading queries....")
