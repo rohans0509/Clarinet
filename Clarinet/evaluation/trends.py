@@ -21,9 +21,11 @@ def trends(file,x):
         plt.xlabel(x)
         plt.ylabel(y)
         
-        plt.title(f"{y} vs {x}",fontsize=12,fontweight='bold')
+        query_type=f"{file.split('Analysis/')[-1].split('/CSV')[0].replace('Queries','').replace('Expected','').replace(' ','')}"
+
+        plt.title(f"{y} ({query_type})",fontsize=12,fontweight='bold')
         plt.xticks(range(int(min(df[x])-1),int(max(df[x]))+2))
 
-        plt.savefig(f"{output_dir}/{y} vs {x}.png")
+        plt.savefig(f"{output_dir}/{y} vs {x}.png",dpi=120)
     except:
         print(f"{file} failed")
