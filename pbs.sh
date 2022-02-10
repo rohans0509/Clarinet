@@ -1,6 +1,6 @@
 #!/bin/sh
 ### Set the job name (for your reference)
-#PBS -N evals8
+#PBS -N evalsnoisevary8
 ### Set the project name, your department code by default
 #PBS -P ee
 ### Request email when job begins and ends
@@ -12,7 +12,7 @@
 ####
 #PBS -lselect=1:ncpus=8
 ### Specify "wallclock time" required for this job, hhh:mm:ss
-#PBS -lwalltime=12:00:00
+#PBS -lwalltime=60:00:00
 export OMP_NUM_THREADS=1
 # After job starts, must goto working directory. 
 # $PBS_O_WORKDIR is the directory from where the job is fired. 

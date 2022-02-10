@@ -6,17 +6,17 @@ import subprocess
 from Clarinet.utils.fast import fast
 from tqdm import tqdm
 
-num_processes=1 # CPUs/4 (Check Clarinet.evaluation.evaluate.py, line 15)
+num_processes=4 # CPUs/4 (Check Clarinet.evaluation.evaluate.py, line 15)
 
 query_folder="Text/Noisy Queries" # List of folders to evaluate
 collection_dir="Text/Original Collection" # Always in TEXT form 
-pitch_range=[0,0.1] # Pitch Range
-extra_range=[0,0.1] # Extra Notes
-deleted_range=[0,0.1] # Deleted Notes Range
+pitch_range=[0,0.05,0.1,0.2,0.3] # Pitch Range
+extra_range=[0,0.05,0.1,0.2,0.3] # Extra Notes
+deleted_range=[0,0.05,0.1,0.15,0.2] # Deleted Notes Range
 
 query_length=-1 # Query Length
-stride_length=30 # Stride Length
-query_num=2 # Number of queries to evaluate
+stride_length=1 # Stride Length
+query_num=-1 # Number of queries to evaluate
 
 
 
