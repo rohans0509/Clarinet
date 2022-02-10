@@ -18,6 +18,8 @@ query_length=-1 # Query Length
 stride_length=30 # Stride Length
 query_num=2 # Number of queries to evaluate
 
+
+
 dont_convert="Text/" in query_folder
 
 def run_fasteval(query_dir,collection_dir,query_length,stride_length,output_dir="",query_num="-1",dont_convert=False):
