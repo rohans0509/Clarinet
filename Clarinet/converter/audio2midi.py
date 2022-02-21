@@ -6,7 +6,6 @@ from omnizart.vocal_contour import app as vocal_contour
 from omnizart.beat import app as beat
 from pydub import AudioSegment
 
-
 APP = {
     "music": music,
     "chord": chord,

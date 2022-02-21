@@ -1,13 +1,14 @@
 import os
 from .skyline import skyline
 from .modified_skyline import mskyline
+from constants import midi_folder
 
 strategies={
     "skyline":skyline,
     "modified-skyline":mskyline
 }
 
-def extractMelody(file, output_dir="Data/Melody",strategy="modified-skyline"):
+def extractMelody(file, output_dir=midi_folder,strategy="modified-skyline"):
     folder_name,filename=file.split('/')[-2],file.split('/')[-1].split('.')[0]
 
     if strategy=="modified-skyline":
