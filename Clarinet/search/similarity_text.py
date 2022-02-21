@@ -42,4 +42,5 @@ def similarity(query:str,data:str,stride_length=0):
             score=edit_distance
 
     sim=1-score/query_len
+    
     return(sim)
