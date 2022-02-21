@@ -2,6 +2,7 @@ from Clarinet.usermodel import NoisyUser
 import os
 from constants import midi_folder
 
+
 models={
     "Noisy":NoisyUser
 }

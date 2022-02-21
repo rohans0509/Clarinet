@@ -1,21 +1,33 @@
 import miditoolkit
 import numpy as np
 import random
+random.seed(seed)
 from constants import random_seed_noisyuser as seed
 import os
 
-random.seed(seed)
-
-def check_validity(vel,pitch,start,end):
-    if vel<=0 or vel>=127:
-        return False
-    if pitch<=0 or pitch>=127:
-        return False
-    if start<=0 or start>=end:
-        return False
-    return True
 
 
+'''
+==============
+USE FUNCTION
+==============
+'''
+def use(midi_file,channel=-1,pitch=0,extra=0,delete=0,velocity=0,length=0):
+    mido_obj = miditoolkit.midi.parser.MidiFile(midi_file)
+    user = NoisyUser(mido_obj)
+    if channel == -1:
+        user.addNoiseToFull(pitch,extra,delete,velocity,length)
+    else:
+        user.addNoiseToChannel(0,pitch,extra,delete,velocity,length)
+    output = user.mido_obj
+    return output
+
+
+'''
+==============
+NOISYUSER CLASS
+==============
+'''
 class NoisyUser:
     def __init__(self,origName, mido_obj,melody_channel=0):
         self.mido_obj = mido_obj
@@ -92,7 +104,7 @@ class NoisyUser:
                             prev_vel = notes[i-1].velocity
                             cur_vel = notes[i].velocity
                             vel = random.randint(min(prev_vel,cur_vel),max(prev_vel,cur_vel))
-                            if check_validity(vel,pitch,start,end):
+                            if self.check_validity(vel,pitch,start,end):
                                 extra_notes.append(miditoolkit.Note(vel,pitch,start,end))
                     except:
                         pass
@@ -121,7 +133,7 @@ class NoisyUser:
                         cur_vel = notes[i].velocity
                         next_vel = notes[i+1].velocity
                         vel = random.randint(min(prev_vel,cur_vel,next_vel),max(prev_vel,cur_vel,next_vel))
-                        if check_validity(vel,pitch,starttime,endtime):
+                        if self.check_validity(vel,pitch,starttime,endtime):
                             extra_notes.append(miditoolkit.Note(vel,pitch,starttime,endtime))
                     except:
                         pass
@@ -175,14 +187,12 @@ class NoisyUser:
         fname = fname.split('/')[-1]
         path = os.path.join(folder,fname.replace(".mid","_noise.mid"))
         self.mido_obj.dump(path)
-
-
-def use(midi_file,channel=-1,pitch=0,extra=0,delete=0,velocity=0,length=0):
-    mido_obj = miditoolkit.midi.parser.MidiFile(midi_file)
-    user = NoisyUser(mido_obj)
-    if channel == -1:
-        user.addNoiseToFull(pitch,extra,delete,velocity,length)
-    else:
-        user.addNoiseToChannel(0,pitch,extra,delete,velocity,length)
-    output = user.mido_obj
-    return output
+        
+    def check_validity(self,vel,pitch,start,end):
+        if vel<=0 or vel>=127:
+            return False
+        if pitch<=0 or pitch>=127:
+            return False
+        if start<=0 or start>=end:
+            return False
+        return True
