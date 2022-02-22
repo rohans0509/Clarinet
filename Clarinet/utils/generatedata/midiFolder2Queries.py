@@ -2,6 +2,7 @@ import miditoolkit
 import os
 import random
 from tqdm import tqdm
+from Clarinet.converter import midi2text
 random.seed(42)
 
 
@@ -32,18 +33,21 @@ def genQuery(fname,num_notes=-1,channel=0):
     else:
         return False, mido_obj
 
-
-def midiFolder2Queries(collection_dir,output_folder,num_notes=-1,num_queries=-1,channel=0):
+def midiFolder2QueryText(folder,num_queries=-1,output_folder="Data/Text",num_notes=-1,channel=0):
 
     # get all files in input folder ending with ".mid"
-    mido_files = [fname for fname in os.listdir(collection_dir) if fname.endswith(".mid")]
+    mido_files = [fname for fname in os.listdir(folder) if fname.endswith(".mid")]
     files = random.sample(mido_files,num_queries)
     for fname in tqdm(files):
         # check if fname ends with .mid
         if fname.endswith(".mid"):                
-            flag, mido_obj = genQuery(os.path.join(input,fname),num_notes)
+            flag, mido_obj = genQuery(os.path.join(folder,fname),num_notes,channel)
             if flag:
-                mido_obj.dump(os.path.join(output_folder,fname))
+                text=midi2text(mido_obj,channel=channel)
+                
+                output_filename=os.path.join(output_folder,fname.replace(".mid",".txt"))
+                with open(output_filename,'w') as f:
+                    f.write(text)
             else:
                 print(f"{fname} is too short")
 

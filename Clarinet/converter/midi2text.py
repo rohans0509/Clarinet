@@ -1,6 +1,12 @@
 import miditoolkit
-def midi2text(filename,channel=0,num_notes=-1): # Takes input midi filename, outputs text representation of it
-    mid_in = miditoolkit.midi.parser.MidiFile(filename)
+def midi2text(filename_or_midObj,channel=0,num_notes=-1): # Takes input midi filename or midobj, outputs text representation of it
+    try:
+        filename=filename_or_midObj
+        mid_in = miditoolkit.midi.parser.MidiFile(filename)
+    except:
+        midObj=filename_or_midObj
+        mid_in = midObj
+    
     notes = mid_in.instruments[channel].notes
     notes = sorted(notes, key=lambda x: x.start)
     rep=[note.pitch for note in notes]

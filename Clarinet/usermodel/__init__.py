@@ -1,6 +1,6 @@
 from Clarinet.usermodel import NoisyUser,IdealUser
 import os
-from constants import midi_folder
+from Clarinet.constants import midi_folder
 
 
 models={
@@ -14,13 +14,17 @@ class User:
         self.model = models[type]
 
 
-    def use(self,midi_file,save=True,output_folder="",*args,**kwargs):
+    def use(self,midi_file,output_folder="",save=True,*args,**kwargs):
         mido_obj=self.model.use(midi_file,*args,**kwargs)
 
         if save:
+
             if output_folder=="":
                 folder_name=f"{self.type} {midi_file.split('/')[-2]}"
                 output_folder=f"{midi_folder}/{folder_name}" # Data/Midi/Noisy Queries for input Data/Midi/Queries/1.mid
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
+                
             fname = midi_file.split('/')[-1]
             path = os.path.join(output_folder,fname)
             self.dump(mido_obj,path)

@@ -1,5 +1,5 @@
 import miditoolkit
-from Clarinet.usermodel.NoisyUser import NoisyUser
+from Clarinet.usermodel.NoisyUser.NoisyUser import NoisyUser
 
 '''
 ==============

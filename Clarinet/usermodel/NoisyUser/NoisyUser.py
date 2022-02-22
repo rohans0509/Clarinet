@@ -1,8 +1,8 @@
 import miditoolkit
 import numpy as np
 import random
+from Clarinet.constants import random_seed_noisyuser as seed
 random.seed(seed)
-from constants import random_seed_noisyuser as seed
 import os
 
 
@@ -13,9 +13,8 @@ NOISYUSER CLASS
 ==============
 '''
 class NoisyUser:
-    def __init__(self,origName, mido_obj,melody_channel=0):
+    def __init__(self, mido_obj,melody_channel=0):
         self.mido_obj = mido_obj
-        self.origName = origName
         self.melody_channel = melody_channel
 
     def addNoiseToChannel(self,channel,pitch,extra,deleted,velocity,length):

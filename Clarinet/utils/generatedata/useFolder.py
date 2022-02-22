@@ -34,7 +34,7 @@ def useFolder(query_dir,output_folder,type="Noisy",*args,**kwargs):
     filenames=os.listdir(query_dir)
     filelocations=[f"{query_dir}/{filename}" for filename in filenames]
     midi_filelocations=[filelocation for filelocation in filelocations if filelocation.endswith(".mid")]
-    for file in (midi_filelocations):
+    for file in tqdm(midi_filelocations):
         user=User(type)
-        user.use(file,output_folder,*args,**kwargs)
+        user.use(midi_file=file,output_folder=output_folder,*args,**kwargs)
 

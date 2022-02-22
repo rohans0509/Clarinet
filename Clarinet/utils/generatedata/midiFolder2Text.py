@@ -3,7 +3,7 @@ from numpy import sort
 from Clarinet.converter import midi2text
 from os import listdir,path
 import os
-
+from tqdm import tqdm
 
 
 def midiFolder2Dict(folder:str,num_files:int,num_notes=-1,channel=0)->Dict: # Returns a dict of form {filelocation:text_representation}
