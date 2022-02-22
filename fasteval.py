@@ -1,6 +1,6 @@
 from Clarinet.evaluation import evaluate
 import os
-from Clarinet.utils import generateText
+from Clarinet.utils.generatedata import midiFolder2Text
 import argparse
 
 '''
@@ -52,7 +52,7 @@ if dont_convert:
 else:
     query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
 
-    generateText(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
+    midiFolder2Text(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
 
 '''
 ==============
