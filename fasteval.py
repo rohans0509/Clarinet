@@ -47,12 +47,12 @@ dont_convert=True if args.dont_convert else False
 CONVERT QUERIES TO TEXT
 ==============
 '''
-if dont_convert:
-    query_text_folder=query_dir
-else:
-    query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
+# if dont_convert:
+query_text_folder=query_dir
+# else:
+#     query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
 
-    midiFolder2Text(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
+#     midiFolder2Text(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
 
 '''
 ==============

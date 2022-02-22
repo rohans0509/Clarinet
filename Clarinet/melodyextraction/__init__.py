@@ -1,6 +1,5 @@
 import os
-from .skyline import skyline
-from .modified_skyline import mskyline
+from Clarinet.melodyextraction.skyline import skyline,mskyline
 from constants import midi_folder
 
 strategies={

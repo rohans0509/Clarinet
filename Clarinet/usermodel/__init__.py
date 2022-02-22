@@ -1,10 +1,11 @@
-from Clarinet.usermodel import NoisyUser
+from Clarinet.usermodel import NoisyUser,IdealUser
 import os
 from constants import midi_folder
 
 
 models={
-    "Noisy":NoisyUser
+    "Noisy":NoisyUser,
+    "Ideal":IdealUser
 }
 
 class User:
