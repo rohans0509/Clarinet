@@ -1,78 +1,61 @@
-# '''
-# ===================
-# Generate Queries
-# ===================
-# '''
+from Clarinet.utils.generatedata import genTextQueries
+import subprocess
+from Clarinet.utils.fast import fast
+from tqdm import tqdm
+import itertools
 
-# from Clarinet.utils.generatedata import genTextQueries
+def genAndEval(collection_dir:str,type,num_notes,num_queries,num_processes=4,collection_num=-1,stride_length=1,delete_data=True,query_midi_folder="",*args,**kwargs):
+    '''
+    ===================
+    Generate Queries
+    ===================
+    '''
+    if query_midi_folder=="":
+        query_midi_folder=f"Data/Midi/Queries/{type} Queries"
 
-# collection_dir="Data/Midi/Collection/Original Collection"
-# type="Noisy"
-# output_folder=f"Data/Midi/Queries/{type} Queries"
+    args=args
+    kwargs=kwargs
 
-# delete_data=True # If delete_data is True, all files in output_folder are deleted. 
-#                 # If delete_data is False, all files in output_folder are moved to discarded.
-# num_notes=15
-# num_queries=2
+    genTextQueries(collection_dir,type,query_midi_folder,delete_data,num_notes,num_queries,**kwargs)
 
-# args=[]
-# kwargs={"channel":[0],
-# "pitch":[0,0.05,0.1,0.2,0.3],
-# "extra":[0,0.05,0.1,0.2,0.3] ,
-# "delete":[0,0.05,0.1,0.15,0.2],
-# "velocity":[0],
-# "length":[0]}
+    '''
+    ===================
+    Evaluate Model
+    ===================
+    '''
 
-# genTextQueries(collection_dir,type,output_folder,delete_data,num_notes,num_queries,**kwargs)
+    query_folder=query_midi_folder.replace("Midi","Text") # List of folders to evaluate
+    collection_dir=collection_dir.replace("Midi","Text") # Always in TEXT form 
 
-# '''
-# ===================
-# Evaluate Model
-# ===================
-# '''
-# import subprocess
-# from Clarinet.utils.fast import fast
-# from tqdm import tqdm
-# import itertools
+    query_length=num_notes # Query Length
 
-# num_processes=4 # CPUs/4 (Check Clarinet.evaluation.evaluate.py, line 15)
+    kwargs=kwargs
 
-# query_folder=output_folder.replace("Midi","Text") # List of folders to evaluate
-# collection_dir=collection_dir.replace("Midi","Text") # Always in TEXT form 
+    dont_convert="Text/" in query_folder
 
-# query_length=-1 # Query Length
-# stride_length=1 # Stride Length
-# query_num=-1 # Number of queries to evaluate
+    # Save query folders in the form Data/Noisy Queries/pitch/extra/deleted
 
-# kwargs=kwargs
+    keys=list(kwargs.keys())
+    values=list(kwargs.values())
+    product=list(itertools.product(*values))
 
-# dont_convert="Text/" in query_folder
+    inputs=[]
 
-# def run_fasteval(query_dir,collection_dir,query_length,stride_length,output_dir="",query_num="-1",dont_convert=False):
-#     if dont_convert:
-#         subprocess.run(["python3","fasteval.py","-q",query_dir,"-l",str(query_length),"-c",collection_dir,"-s",str(stride_length),"-o",output_dir,"-n",str(query_num),"-t"])
-#     else:
-#         subprocess.run(["python3","fasteval.py","-q",query_dir,"-l",str(query_length),"-c",collection_dir,"-s",str(stride_length),"-o",output_dir,"-n",str(query_num)])
+    for tup in product:
+        args=[]
+        kwargs={keys[i]:tup[i] for i in range(len(keys))}
 
+        name_list=[f"{key.capitalize()} {value}" for key,value in kwargs.items()]
+        query_dir=f"{query_folder}/{'/'.join(name_list)}"
 
-# # Save query folders in the form Data/Noisy Queries/pitch/extra/deleted
+        output_dir=f"{query_dir.replace('Data/Text/Queries','Results')}"
 
-# keys=list(kwargs.keys())
-# values=list(kwargs.values())
-# product=list(itertools.product(*values))
+        inputs.append((query_dir,collection_dir,query_length,stride_length,output_dir,num_queries,dont_convert,collection_num))
 
-# inputs=[]
+    fast(run_fasteval,inputs,num_processes=num_processes)
 
-# for tup in product:
-#     args=[]
-#     kwargs={keys[i]:tup[i] for i in range(len(keys))}
-#     name_list=[f"{key.capitalize()} {value}" for key,value in kwargs.items()]
-#     output_dir=f"{output_folder}/{'/'.join(name_list)}"
-
-#     input_dir=f"{query_folder}/{pitch}_{extra}_{deleted}"
-#     output_dir=f"{input_dir.replace('Data','Results').replace('Text','Results').replace('_','/')}"
-
-#     inputs.append((input_dir,collection_dir,query_length,stride_length,output_dir,query_num,dont_convert))
-
-# fast(run_fasteval,inputs,num_processes=num_processes)
-
+def run_fasteval(query_dir,collection_dir,query_length,stride_length,output_dir="",query_num="-1",dont_convert=False,collection_num=-1):
+        if dont_convert:
+            subprocess.run(["python3","fasteval.py","-q",query_dir,"-l",str(query_length),"-c",collection_dir,"-s",str(stride_length),"-o",output_dir,"-n",str(query_num),"-t","-a",str(collection_num)])
+        else:
+            subprocess.run(["python3","fasteval.py","-q",query_dir,"-l",str(query_length),"-c",collection_dir,"-s",str(stride_length),"-o",output_dir,"-n",str(query_num),"-a",str(collection_num)])
