@@ -14,7 +14,7 @@ class User:
         self.model = models[type]
 
 
-    def use(self,midi_file,output_folder="",save=True,*args,**kwargs):
+    def use(self,midi_file ,output_folder="",save=True,*args,**kwargs):
         mido_obj=self.model.use(midi_file,*args,**kwargs)
 
         if save:

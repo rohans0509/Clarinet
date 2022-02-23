@@ -10,6 +10,7 @@ def midi2text(filename_or_midObj,channel=0,num_notes=-1): # Takes input midi fil
     notes = mid_in.instruments[channel].notes
     notes = sorted(notes, key=lambda x: x.start)
     rep=[note.pitch for note in notes]
+    
 
 
     pitch_map = {
@@ -26,9 +27,11 @@ def midi2text(filename_or_midObj,channel=0,num_notes=-1): # Takes input midi fil
     22: "A#",
     23: "B"
     }
-
+    if num_notes==-1:
+        num_notes=len(notes)
     out=[]
     for pitch in rep[:num_notes+1]:
         num = pitch % 12
         out.append(pitch_map[num + 12])
+
     return "".join(out)
