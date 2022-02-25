@@ -3,7 +3,7 @@
 # Second box is for plotting which works but the graphs aren't great
 
 
-from Clarinet.converter import remi2midi
+from Clarinet.utils.convert import remi2midi
 input_file="Adele_remi.npy"
 predicted_file="Adele_predicted.npy"
 dictionary_file="remi.pkl"

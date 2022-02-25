@@ -1,6 +1,6 @@
 from typing import Dict
 from numpy import sort
-from Clarinet.converter import midi2text
+from Clarinet.utils.convert import midi2text
 from os import listdir,path
 import os
 from tqdm import tqdm

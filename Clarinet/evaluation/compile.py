@@ -5,6 +5,7 @@ from tqdm import tqdm
 
 def compile(result_dir,naming={},metric="Mean Rank",output_dir="Results/Analysis"):
     values=list(naming.values())
+    values=[value.capitalize() for value in values]
 
     product=list(itertools.product(*values))
 
