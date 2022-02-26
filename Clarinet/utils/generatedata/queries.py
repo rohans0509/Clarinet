@@ -9,7 +9,7 @@ import glob
 import datetime
 import itertools
 from Clarinet.usermodel import User
-from Clarinet.converter import midi2text
+from Clarinet.utils.convert import midi2text
 
 def genQuery(fname_or_mido_Obj,num_notes=-1,channel=0):
     try:

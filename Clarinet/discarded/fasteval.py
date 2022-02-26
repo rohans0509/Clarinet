@@ -41,31 +41,34 @@ query_num=int(args.query_num) if args.query_num else -1
 collection_num=args.collection_num if args.collection_num else -1
 disable=args.disable_tqdm if args.disable_tqdm else False
 dont_convert=True if args.dont_convert else False
+similarity_type="text"
 
-'''
-==============
-CONVERT QUERIES TO TEXT
-==============
-'''
-# if dont_convert:
-query_text_folder=query_dir
-# else:
-#     query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
+def fastEval(query_dir,collection_dir,query_length,stride_length,output_dir,channel,query_num,collection_num,disable,dont_convert):
 
-#     midiFolder2Text(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
+    '''
+    ==============
+    CONVERT QUERIES TO TEXT
+    ==============
+    '''
+    # if dont_convert:
+    query_text_folder=query_dir
+    # else:
+    #     query_text_folder=f"Text/{query_dir.split('Data/')[1]}"
 
-'''
-==============
-EVALUATE QUERIES
-==============
-'''
+    #     midiFolder2Text(query_dir,output_folder=query_text_folder,num_files=query_num,num_notes=query_length,channel=channel)
 
-if not os.path.exists(collection_dir):
-    raise Exception(f"Collection folder {collection_dir} does not exist, please convert midi collection folder to text first")
+    '''
+    ==============
+    EVALUATE QUERIES
+    ==============
+    '''
 
-query_dir=query_text_folder
+    if not os.path.exists(collection_dir):
+        raise Exception(f"Collection folder {collection_dir} does not exist, please convert midi collection folder to text first")
 
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+    query_dir=query_text_folder
 
-evaluate(query_dir,collection_dir,stride_length=stride_length,similarity_type="text",output_dir=output_dir,num_queries=query_num,num_collection=collection_num,disable=disable)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    evaluate(query_dir,collection_dir,stride_length=stride_length,similarity_type=similarity_type,output_dir=output_dir,num_queries=query_num,num_collection=collection_num,disable=disable)

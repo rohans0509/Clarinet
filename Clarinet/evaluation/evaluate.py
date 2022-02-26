@@ -9,9 +9,7 @@ import json
 from tqdm import tqdm
 import miditoolkit
 from multiprocessing.dummy import Pool as ThreadPool 
-
-
-from Clarinet.utils.fast import fast
+import os
 
 
 def evaluate(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_length=0,similarity_type="text",output_dir="Results",disable=False):
@@ -41,7 +39,8 @@ def evaluate(query_dir,collection_dir,num_queries=-1,num_collection=-1,stride_le
 
     for i in range(len(query_filenames)):
         scores[i]=output[i]
-
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     with open(f"{output_dir}/scores.json", 'w') as fp:
         json.dump(scores, fp)
 

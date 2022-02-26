@@ -1,7 +1,4 @@
-from .similarity_sankoff import similarity as similarity_sankoff
-from .similarity_sankoff import Note
-from .similarity_text import similarity as similarity_text
-from .similarity_time import similarity as similarity_time
+from Clarinet.search.similarity import similarity_sankoff,similarity_text,similarity_time
 
 SIM_DICT = {
     "sankoff": similarity_sankoff,
