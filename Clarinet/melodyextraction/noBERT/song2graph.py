@@ -36,13 +36,34 @@ class Graph:
     def shortestPath(self):
         '''
         input   -> layers information (nD array of numberoflayer,...)
+                    layers number of neurons per layer
                 -> dist (3D array of layer,start,end)
+                    dist (layer idx, neuron in idx^th layer, neuron in idx+1^th layer)
                 -> neurons (1D array of number of neurons in each layer)
+
         '''
-        neurons=[]
+        # neurons=[]
+        # for i in range(len(self.layers)):
+        #     neurons.append(len(self.layers[i]))
+        # dist=np.zeros((len(self.layers),neurons[0],neurons[-1]))
+
+        layers = []
         for i in range(len(self.layers)):
-            neurons.append(len(self.layers[i]))
-        dist=np.zeros((len(self.layers),neurons[0],neurons[-1]))
+            layers.append(len(self.layers[i]))
+        
+        neurons = []
+        for i in range(len(layers)):
+            num_neurons = layers[i]
+            neurons.append(np.arange(num_neurons))
+
+        maxnum_neurons = max(layers)
+        dist = np.zeros((len(layers),maxnum_neurons,maxnum_neurons))
+
+        for i in range(len(layers)-1):
+            for j in range(layers[i]):
+                for k in range(layers[i+1]):
+                    dist[i][j][k] = self.weight_matrix[self.layers[i][j][0][0]][self.layers[i+1][k][0][0]]
+
         shortestpaths = []
         shortestpathsdist = []
         for i in range(self.layers):
