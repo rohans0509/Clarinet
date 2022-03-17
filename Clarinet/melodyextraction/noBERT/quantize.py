@@ -1,8 +1,4 @@
-def planck(notes):
-    return 1
-
-def quantize(notes, rest=True):
-    planck=planck(notes)
+def quantize(notes, planck=1, rest=True):
     start = notes[0].start
 
     for note in notes:
@@ -29,9 +25,9 @@ def quantize(notes, rest=True):
             
     if rest:
         for i in range(len(quantized_notes)):
-            quantized_notes[i].append((-1,-1))
+            quantized_notes[i].append((129,-1))
     else:
         for i in range(len(quantized_notes)):
             if len(quantized_notes[i]) == 0:
-                quantized_notes[i].append((-1,-1))
+                quantized_notes[i].append((129,-1))
     return quantized_notes

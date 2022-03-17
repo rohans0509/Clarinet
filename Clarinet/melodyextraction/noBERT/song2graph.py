@@ -22,7 +22,7 @@ class Graph:
     def __init__(self, midi_file,weight_matrix):
         self.midi_file = midi_file
         self.box_list = quantize(process_midiFile(midi_file),planck=1)
-        #self.box_list = [(-1,-1)] + self.box_list + [(-1,-1)]
+        self.box_list = [[(0,-1)]] + self.box_list + [[(130,-1)]]
         self.weight_matrix = weight_matrix
         self.layers = [[] for i in range(len(self.box_list))]
         # each layer will contain [ [(pitch,velocity,[list of weights corresponding next layer])], ... ]
@@ -39,7 +39,14 @@ class Graph:
                 pitch = note1[0]
                 velocity = note1[1]
                 self.layers[i].append(Node(pitch=pitch,velocity=velocity,weight_list=weight_list,layer_idx=i,parent_idx=-1))
-
+        cur = len(self.box_list)-1
+        box = self.box_list[cur]
+        for note in box:
+            weight_list = []
+            pitch = note[0]
+            velocity = note[1]
+            self.layers[cur].append(Node(pitch=pitch,velocity=velocity,weight_list=weight_list,layer_idx=cur,parent_idx=-1))
+    
     def get_weights(self,note1,note2):
         p1 = note1[0]
         p2 = note2[0]
@@ -61,9 +68,8 @@ class Graph:
     
     def getPath(self):
         path = []
-        # [TODO] fix this last empty box 
-        path.append(self.layers[-2][0])
-        for i in range(len(self.layers)-3,0,-1):
+        path.append(self.layers[-1][0])
+        for i in range(len(self.layers)-2,0,-1):
             parent = path[-1].parent_idx
             path.append(self.layers[i][parent])
         path.reverse()
@@ -86,5 +92,5 @@ class Graph:
 
 def song2graph(midi_file,weight_matrix):
     g=Graph(midi_file,weight_matrix)
-    g.createGraph()
+    g.create_graph()
     return g
