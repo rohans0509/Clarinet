@@ -21,7 +21,8 @@ class Node:
 class Graph:
     def __init__(self, midi_file,weight_matrix):
         self.midi_file = midi_file
-        self.box_list = quantize(process_midiFile(midi_file),planck=1)
+        self.planck = 20
+        self.box_list = quantize(process_midiFile(midi_file),planck=self.planck)
         self.box_list = [[(0,-1)]] + self.box_list + [[(130,-1)]]
         self.weight_matrix = weight_matrix
         self.layers = [[] for i in range(len(self.box_list))]
@@ -88,6 +89,7 @@ class Graph:
                 if pitches[i]!=melody[-1]:
                     melody.append(pitches[i])
         return(melody)
+    
                     
 
 def song2graph(midi_file,weight_matrix):
