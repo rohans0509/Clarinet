@@ -78,41 +78,49 @@ pitch_map = {
 def get_pitch_name(pitch):
     num = pitch % 12
     return pitch_map[num + 12]
-
+def dropRest(melody):
+    new_melody = []
+    for i in range(len(melody)):
+        if melody[i] != 129:
+            new_melody.append(melody[i])
+    return new_melody
 
 def evaluate(midi_file,weights=None):
     actual=midi2text(midi_file)
     g=song2graph(midi_file,weights)
     melody = g.melody()
+    melody = dropRest(melody)
+
     predicted = [get_pitch_name(pitch) for pitch in melody]
+    
     predicted="".join(predicted)
 
-    return(similarity(predicted,actual))
+    return(similarity(predicted,actual),predicted,actual)
 
 def evaluateFolder(midi_folder,num_files=-1,weights=None):
     files=sorted([f"{midi_folder}/{filename}" for filename in os.listdir(midi_folder)])
     if num_files==-1:
         num_files=len(files)
-    df=pd.DataFrame(columns=["Filename","Score"])
+    df=pd.DataFrame(columns=["Filename","Score","Predicted","Actual"])
     for i in tqdm(range(num_files)):
         file=files[i]
-        score=evaluate(file,weights)
-        df=df.append({"Filename":file,"Score":score},ignore_index=True)
+        score,predicted,actual=evaluate(file,weights)
+        df=df.append({"Filename":file,"Score":score,"Predicted":predicted,"Actual":actual},ignore_index=True)
     return(df)
 
 
 if __name__ == "__main__":
-    num_files=900
+    num_files=1
 
-    # melody
-    weights = np.load("Data/Numpy/noBERT/melodic.npy")
+    # # melody
+    # weights = np.load("Data/Numpy/noBERT/melodic.npy")
 
-    df=evaluateFolder("Data/MIDI/Collection/Original Collection",num_files,weights)
-    df.to_csv("Results/Melody/results_p.csv",index=False)
+    # df=evaluateFolder("Data/MIDI/Collection/Original Collection",num_files,weights)
+    # df.to_csv("Results/Melody/results_p.csv",index=False)
 
     # weights
-    dumpNonMelodic("Data/MIDI/Collection/Original Collection", "Data/Numpy/noBERT",num_files=-1)
-    dumpWeight("Data/Numpy/noBERT")
+    # dumpNonMelodic("Data/MIDI/Collection/Original Collection", "Data/Numpy/noBERT",num_files=40)
+    # dumpWeight("Data/Numpy/noBERT")
     weights = np.load("Data/Numpy/noBERT/weight.npy")
 
     df=evaluateFolder("Data/MIDI/Collection/Original Collection",num_files,weights)

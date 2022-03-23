@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Filename,Score
 Data/MIDI/Collection/Original Collection/001.mid,0.6666666666666667
 Data/MIDI/Collection/Original Collection/002.mid,0.6666666666666667
@@ -899,3 +900,7 @@ Data/MIDI/Collection/Original Collection/897.mid,1.0
 Data/MIDI/Collection/Original Collection/898.mid,0.6666666666666667
 Data/MIDI/Collection/Original Collection/899.mid,0.6666666666666667
 Data/MIDI/Collection/Original Collection/900.mid,1.0
+=======
+Filename,Score,Predicted,Actual
+Data/MIDI/Collection/Original Collection/001.mid,1.0,A#,C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#F#F#F#FF#FFF#FC#D#D#FF#F#FF#FD#C#F#F#G#A#G#G#A#G#FF#C#D#F#A#G#F#G#A#G#F#F#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#A#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#F#F#F#FF#FFF#FC#D#D#FF#F#FF#FD#C#F#F#G#A#G#G#A#G#FF#C#D#F#A#G#F#G#A#G#F#F#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#A#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#F#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#A#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#F#C#D#F#G#A#F#D#G#G#FC#F#C#D#F#G#A#F#D#G#C#G#F#
+>>>>>>> 9b0f3abac7c7fb490ccdf5bb491e583ec8c62a81
