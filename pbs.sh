@@ -1,8 +1,8 @@
 #!/bin/sh
 ### Set the job name (for your reference)
-#PBS -N evals8_24feb
+#PBS -N 21martests
 ### Set the project name, your department code by default
-#PBS -P ee
+#PBS -P jayadeva.p2.440
 ### Request email when job begins and ends
 #PBS -m bea
 ### Low priority for now
@@ -10,7 +10,7 @@
 ### Specify email address to use for notification.
 #PBS -M $USER@iitd.ac.in
 ####
-#PBS -lselect=1:ncpus=8
+#PBS -lselect=1:ncpus=1
 ### Specify "wallclock time" required for this job, hhh:mm:ss
 #PBS -lwalltime=94:00:00
 export OMP_NUM_THREADS=1
